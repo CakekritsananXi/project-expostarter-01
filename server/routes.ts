@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Stripe from "stripe";
 import { storage } from "./storage";
+import { VulnerabilityScanner } from "./security/vulnerabilityScanner";
 import { 
   insertUserSchema, 
   insertStripeCustomerSchema, 
@@ -1034,6 +1035,81 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Delete calendar event error:', error);
       res.status(500).json({ error: 'Failed to delete calendar event' });
+    }
+  });
+
+  // Security scanning endpoints
+  app.get('/api/security/scan', authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const user = await storage.getUser(userId);
+      
+      // Only allow admin users to run security scans
+      if (!user || user.email !== 'admin@demo.com') {
+        return res.status(403).json({ error: 'Admin access required' });
+      }
+
+      const baseUrl = `${req.protocol}://${req.get('host')}`;
+      const scanResult = await VulnerabilityScanner.runComprehensiveScan(baseUrl);
+      
+      res.json({
+        success: true,
+        data: scanResult,
+        scannedAt: new Date().toISOString(),
+      });
+    } catch (error) {
+      console.error('Security scan error:', error);
+      res.status(500).json({ 
+        success: false, 
+        error: 'Failed to run security scan',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  });
+
+  app.get('/api/security/vulnerabilities', authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const user = await storage.getUser(userId);
+      
+      if (!user || user.email !== 'admin@demo.com') {
+        return res.status(403).json({ error: 'Admin access required' });
+      }
+
+      const vulnerabilityReport = await VulnerabilityScanner.runSnykScan();
+      res.json({
+        success: true,
+        data: vulnerabilityReport,
+      });
+    } catch (error) {
+      console.error('Vulnerability scan error:', error);
+      res.status(500).json({ 
+        success: false, 
+        error: 'Failed to scan vulnerabilities',
+      });
+    }
+  });
+
+  app.get('/api/security/audit', authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const user = await storage.getUser(userId);
+      
+      if (!user || user.email !== 'admin@demo.com') {
+        return res.status(403).json({ error: 'Admin access required' });
+      }
+
+      const auditReport = await VulnerabilityScanner.runNpmAudit();
+      res.json({
+        success: true,
+        data: auditReport,
+      });
+    } catch (error) {
+      console.error('Security audit error:', error);
+      res.status(500).json({ 
+        success: false, 
+        error: 'Failed to run security audit',
+      });
     }
   });
 

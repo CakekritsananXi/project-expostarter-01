@@ -8,12 +8,15 @@ import {
   Home,
   PenTool,
   Menu,
-  X
+  X,
+  Shield
 } from 'lucide-react';
+import { useAuth } from '../auth/AuthProvider';
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [location] = useLocation();
+  const { user } = useAuth();
 
   const navItems = [
     { path: '/', icon: Home, label: 'Dashboard' },
@@ -22,6 +25,12 @@ const Navigation = () => {
     { path: '/library', icon: FolderOpen, label: 'Library' },
     { path: '/analytics', icon: BarChart3, label: 'Analytics' },
   ];
+
+  // Add security dashboard for admin users only
+  const isAdmin = user?.email === 'admin@demo.com';
+  if (isAdmin) {
+    navItems.push({ path: '/security', icon: Shield, label: 'Security' });
+  }
 
 
   return (

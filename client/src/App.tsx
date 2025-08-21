@@ -19,6 +19,7 @@ import Admin from './pages/Admin';
 import Landing from './pages/Landing';
 import MobileLanding from './pages/MobileLanding';
 import SubscriptionManager from './pages/SubscriptionManager';
+import SecurityDashboard from './pages/SecurityDashboard';
 
 function App() {
   return (
@@ -101,6 +102,14 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <SubscriptionManager />
+              </Layout>
+            </ProtectedRoute>
+          </Route>
+
+          <Route path="/security">
+            <ProtectedRoute>
+              <Layout>
+                <SecurityDashboard />
               </Layout>
             </ProtectedRoute>
           </Route>
