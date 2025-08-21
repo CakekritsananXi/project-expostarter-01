@@ -26,22 +26,39 @@ async function authenticateToken(req: Request, res: Response, next: Function) {
   const token = authHeader && authHeader.split(' ')[1];
 
   console.log('Authenticating request to:', req.path);
-  console.log('Auth header present:', !!authHeader);
-  console.log('Token present:', !!token);
+  console.log('Auth header:', authHeader ? 'present' : 'missing');
+  console.log('Token extracted:', token ? 'yes' : 'no');
 
   if (!token) {
-    console.log('No token provided');
+    console.log('No token provided in request');
     return res.status(401).json({ error: 'Access token required' });
   }
 
   try {
+    console.log('Verifying token with JWT_SECRET...');
     const decoded = jwt.verify(token, JWT_SECRET) as { userId: number };
-    console.log('Token decoded successfully, userId:', decoded.userId);
+    console.log('Token verified successfully, userId:', decoded.userId);
+    
+    // Verify user still exists
+    const user = await storage.getUser(decoded.userId);
+    if (!user) {
+      console.log('Token valid but user not found in database');
+      return res.status(401).json({ error: 'User not found' });
+    }
+    
+    console.log('User found in database:', user.email);
     (req as any).userId = decoded.userId;
     next();
   } catch (error) {
-    console.log('Token verification failed:', error instanceof Error ? error.message : error);
-    return res.status(403).json({ error: 'Invalid token' });
+    console.log('Token verification failed:', error instanceof Error ? error.message : String(error));
+    
+    if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).json({ error: 'Invalid token format' });
+    } else if (error instanceof jwt.TokenExpiredError) {
+      return res.status(401).json({ error: 'Token expired' });
+    } else {
+      return res.status(401).json({ error: 'Token verification failed' });
+    }
   }
 }
 

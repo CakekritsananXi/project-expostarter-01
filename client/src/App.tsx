@@ -1,3 +1,4 @@
+
 import { Router, Route, Switch } from 'wouter';
 import { AuthProvider } from './components/auth/AuthProvider';
 import Layout from './components/layout/Layout';
@@ -22,10 +23,20 @@ function App() {
     <AuthProvider>
       <Router>
         <Switch>
+          {/* Public routes */}
           <Route path="/login" component={Login} />
           <Route path="/signup" component={SignUp} />
           <Route path="/pricing" component={Pricing} />
-          <Route path="/success" component={Success} />
+          
+          {/* Protected routes */}
+          <Route path="/success">
+            <ProtectedRoute>
+              <Layout>
+                <Success />
+              </Layout>
+            </ProtectedRoute>
+          </Route>
+          
           <Route path="/admin">
             <ProtectedRoute>
               <Layout>
@@ -33,22 +44,62 @@ function App() {
               </Layout>
             </ProtectedRoute>
           </Route>
-          <Route>
-            {(params) => (
-              <ProtectedRoute>
-                <Layout>
-                  <Switch>
-                    <Route path="/" component={Dashboard} />
-                    <Route path="/ideation" component={Ideation} />
-                    <Route path="/strategy" component={Strategy} />
-                    <Route path="/calendar" component={Calendar} />
-                    <Route path="/library" component={Library} />
-                    <Route path="/analytics" component={Analytics} />
-                    <Route path="/collaboration" component={Collaboration} />
-                  </Switch>
-                </Layout>
-              </ProtectedRoute>
-            )}
+          
+          <Route path="/ideation">
+            <ProtectedRoute>
+              <Layout>
+                <Ideation />
+              </Layout>
+            </ProtectedRoute>
+          </Route>
+          
+          <Route path="/strategy">
+            <ProtectedRoute>
+              <Layout>
+                <Strategy />
+              </Layout>
+            </ProtectedRoute>
+          </Route>
+          
+          <Route path="/calendar">
+            <ProtectedRoute>
+              <Layout>
+                <Calendar />
+              </Layout>
+            </ProtectedRoute>
+          </Route>
+          
+          <Route path="/library">
+            <ProtectedRoute>
+              <Layout>
+                <Library />
+              </Layout>
+            </ProtectedRoute>
+          </Route>
+          
+          <Route path="/analytics">
+            <ProtectedRoute>
+              <Layout>
+                <Analytics />
+              </Layout>
+            </ProtectedRoute>
+          </Route>
+          
+          <Route path="/collaboration">
+            <ProtectedRoute>
+              <Layout>
+                <Collaboration />
+              </Layout>
+            </ProtectedRoute>
+          </Route>
+          
+          {/* Default route - Dashboard */}
+          <Route path="/">
+            <ProtectedRoute>
+              <Layout>
+                <Dashboard />
+              </Layout>
+            </ProtectedRoute>
           </Route>
         </Switch>
       </Router>
