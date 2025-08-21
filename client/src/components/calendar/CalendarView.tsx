@@ -1,33 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Calendar as CalendarIcon, 
-  ChevronLeft, 
-  ChevronRight, 
-  Plus,
-  Clock,
-  FileText,
-  Target,
-  Users,
-  CheckCircle,
-  XCircle,
-  AlertCircle
-} from 'lucide-react';
+import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight, Plus, Clock } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isToday, isSameMonth, isSameDay, addMonths, subMonths } from 'date-fns';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
-
-interface CalendarEvent {
-  id: number;
-  title: string;
-  description?: string;
-  eventDate: string;
-  eventType: 'content' | 'deadline' | 'meeting' | 'launch';
-  status: 'scheduled' | 'completed' | 'cancelled';
-  allDay: boolean;
-  duration?: number;
-  postId?: number;
-  campaignId?: number;
-}
+import { CalendarEvent } from '../../types/calendar';
+import { getEventsForDate, getEventStyle, getEventIcon } from '../../utils/calendar';
+import { EVENT_TYPES, CALENDAR_VIEWS, DAY_NAMES, CalendarView as ViewType } from '../../constants/calendar';
 
 interface CalendarViewProps {
   events: CalendarEvent[];
@@ -47,57 +25,12 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   isLoading = false
 }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [view, setView] = useState<'month' | 'week' | 'day'>('month');
+  const [view, setView] = useState<ViewType>('month');
   const [draggedEvent, setDraggedEvent] = useState<CalendarEvent | null>(null);
 
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(currentDate);
   const monthDays = eachDayOfInterval({ start: monthStart, end: monthEnd });
-
-  // Get events for a specific date
-  const getEventsForDate = (date: Date): CalendarEvent[] => {
-    return events.filter(event => 
-      isSameDay(new Date(event.eventDate), date)
-    );
-  };
-
-  // Event type styling
-  const getEventTypeStyle = (eventType: string, status: string) => {
-    const baseStyle = "text-xs px-2 py-1 rounded-md font-medium truncate";
-    
-    if (status === 'completed') {
-      return `${baseStyle} bg-green-100 text-green-700 border border-green-200`;
-    }
-    if (status === 'cancelled') {
-      return `${baseStyle} bg-gray-100 text-gray-500 border border-gray-200 line-through`;
-    }
-
-    switch (eventType) {
-      case 'content':
-        return `${baseStyle} bg-blue-100 text-blue-700 border border-blue-200`;
-      case 'deadline':
-        return `${baseStyle} bg-red-100 text-red-700 border border-red-200`;
-      case 'meeting':
-        return `${baseStyle} bg-purple-100 text-purple-700 border border-purple-200`;
-      case 'launch':
-        return `${baseStyle} bg-orange-100 text-orange-700 border border-orange-200`;
-      default:
-        return `${baseStyle} bg-gray-100 text-gray-700 border border-gray-200`;
-    }
-  };
-
-  const getEventIcon = (eventType: string, status: string) => {
-    if (status === 'completed') return <CheckCircle className="w-3 h-3" />;
-    if (status === 'cancelled') return <XCircle className="w-3 h-3" />;
-
-    switch (eventType) {
-      case 'content': return <FileText className="w-3 h-3" />;
-      case 'deadline': return <AlertCircle className="w-3 h-3" />;
-      case 'meeting': return <Users className="w-3 h-3" />;
-      case 'launch': return <Target className="w-3 h-3" />;
-      default: return <CalendarIcon className="w-3 h-3" />;
-    }
-  };
 
   // Drag and drop handlers
   const handleDragStart = (e: React.DragEvent, event: CalendarEvent) => {
@@ -178,7 +111,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         <div className="flex items-center space-x-2">
           {/* View Toggle */}
           <div className="hidden sm:flex items-center space-x-1 bg-gray-100 rounded-lg p-1">
-            {(['month', 'week', 'day'] as const).map((viewType) => (
+            {CALENDAR_VIEWS.map((viewType) => (
               <button
                 key={viewType}
                 onClick={() => setView(viewType)}
@@ -217,7 +150,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
       {/* Calendar Grid */}
       <div className="grid grid-cols-7 gap-1 mb-2">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+        {DAY_NAMES.map((day) => (
           <div key={day} className="p-3 text-center">
             <span className="text-sm font-medium text-gray-500">{day}</span>
           </div>
@@ -226,7 +159,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
 
       <div className="grid grid-cols-7 gap-1">
         {monthDays.map((date) => {
-          const dayEvents = getEventsForDate(date);
+          const dayEvents = getEventsForDate(events, date);
           const isCurrentMonth = isSameMonth(date, currentDate);
           const isCurrentDay = isToday(date);
 
@@ -258,7 +191,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
                 {dayEvents.slice(0, 3).map((event) => (
                   <div
                     key={event.id}
-                    className={getEventTypeStyle(event.eventType, event.status)}
+                    className={getEventStyle(event.eventType, event.status)}
                     draggable
                     onDragStart={(e) => handleDragStart(e, event)}
                     onClick={(e) => {
@@ -285,26 +218,15 @@ const CalendarView: React.FC<CalendarViewProps> = ({
       {/* Legend */}
       <div className="mt-6 pt-4 border-t border-gray-200">
         <div className="flex flex-wrap items-center gap-4 text-sm">
-          <div className="flex items-center space-x-2">
-            <FileText className="w-4 h-4 text-blue-600" />
-            <span className="text-gray-600">Content</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <AlertCircle className="w-4 h-4 text-red-600" />
-            <span className="text-gray-600">Deadline</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Users className="w-4 h-4 text-purple-600" />
-            <span className="text-gray-600">Meeting</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Target className="w-4 h-4 text-orange-600" />
-            <span className="text-gray-600">Launch</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <CheckCircle className="w-4 h-4 text-green-600" />
-            <span className="text-gray-600">Completed</span>
-          </div>
+          {Object.entries(EVENT_TYPES).map(([key, config]) => {
+            const Icon = config.icon;
+            return (
+              <div key={key} className="flex items-center space-x-2">
+                <Icon className={`w-4 h-4 ${config.color}`} />
+                <span className="text-gray-600">{config.label}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </Card>

@@ -1,56 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { X, Calendar, Clock, FileText, Users, Target, AlertCircle } from 'lucide-react';
+import { X, Clock } from 'lucide-react';
 import { format } from 'date-fns';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
-// Simple validation without external schema
-const validateEventData = (data: any) => {
-  const errors: Record<string, string> = {};
-  
-  if (!data.title?.trim()) {
-    errors.title = 'Title is required';
-  }
-  
-  if (!data.eventDate) {
-    errors.eventDate = 'Date is required';
-  }
-  
-  if (!data.allDay && !data.duration) {
-    errors.duration = 'Duration is required for timed events';
-  }
-  
-  return { isValid: Object.keys(errors).length === 0, errors };
-};
-
-interface CalendarEvent {
-  id?: number;
-  title: string;
-  description?: string;
-  eventDate: string;
-  eventType: 'content' | 'deadline' | 'meeting' | 'launch';
-  status: 'scheduled' | 'completed' | 'cancelled';
-  allDay: boolean;
-  duration?: number;
-  postId?: number;
-  campaignId?: number;
-}
-
-interface Post {
-  id: number;
-  title: string;
-  status: string;
-}
-
-interface Campaign {
-  id: number;
-  name: string;
-  status: string;
-}
+import { CalendarEvent, CalendarEventInput, Post, Campaign } from '../../types/calendar';
+import { EVENT_TYPES, EVENT_STATUSES } from '../../constants/calendar';
+import { validateEventData } from '../../utils/calendar';
 
 interface EventModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (event: Partial<CalendarEvent>) => Promise<void>;
+  onSave: (event: Partial<CalendarEventInput>) => Promise<void>;
   onDelete?: (eventId: number) => Promise<void>;
   event?: CalendarEvent | null;
   selectedDate?: Date;
@@ -68,7 +28,7 @@ const EventModal: React.FC<EventModalProps> = ({
   posts,
   campaigns
 }) => {
-  const [formData, setFormData] = useState<Partial<CalendarEvent>>({
+  const [formData, setFormData] = useState<Partial<CalendarEventInput>>({
     title: '',
     description: '',
     eventDate: selectedDate ? selectedDate.toISOString() : new Date().toISOString(),
@@ -94,18 +54,18 @@ const EventModal: React.FC<EventModalProps> = ({
     }
   }, [event, selectedDate]);
 
-  const eventTypeOptions = [
-    { value: 'content', label: 'Content', icon: FileText, color: 'text-blue-600' },
-    { value: 'deadline', label: 'Deadline', icon: AlertCircle, color: 'text-red-600' },
-    { value: 'meeting', label: 'Meeting', icon: Users, color: 'text-purple-600' },
-    { value: 'launch', label: 'Launch', icon: Target, color: 'text-orange-600' },
-  ];
+  // Get options from constants
+  const eventTypeOptions = Object.entries(EVENT_TYPES).map(([key, config]) => ({
+    value: key,
+    label: config.label,
+    icon: config.icon,
+    color: config.color,
+  }));
 
-  const statusOptions = [
-    { value: 'scheduled', label: 'Scheduled' },
-    { value: 'completed', label: 'Completed' },
-    { value: 'cancelled', label: 'Cancelled' },
-  ];
+  const statusOptions = Object.entries(EVENT_STATUSES).map(([key, config]) => ({
+    value: key,
+    label: config.label,
+  }));
 
   const validateForm = () => {
     const { isValid, errors: validationErrors } = validateEventData({
@@ -155,7 +115,7 @@ const EventModal: React.FC<EventModalProps> = ({
     }
   };
 
-  const handleFieldChange = (field: keyof CalendarEvent, value: any) => {
+  const handleFieldChange = (field: keyof CalendarEventInput, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
