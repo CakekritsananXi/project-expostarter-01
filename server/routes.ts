@@ -25,15 +25,22 @@ async function authenticateToken(req: Request, res: Response, next: Function) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
+  console.log('Authenticating request to:', req.path);
+  console.log('Auth header present:', !!authHeader);
+  console.log('Token present:', !!token);
+
   if (!token) {
+    console.log('No token provided');
     return res.status(401).json({ error: 'Access token required' });
   }
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as { userId: number };
+    console.log('Token decoded successfully, userId:', decoded.userId);
     (req as any).userId = decoded.userId;
     next();
   } catch (error) {
+    console.log('Token verification failed:', error instanceof Error ? error.message : error);
     return res.status(403).json({ error: 'Invalid token' });
   }
 }
@@ -255,20 +262,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = (req as any).userId;
       console.log('Checking admin privileges for user ID:', userId);
       
+      if (!userId) {
+        console.log('No user ID found in request');
+        return res.status(401).json({ error: 'Authentication required' });
+      }
+      
       const user = await storage.getUser(userId);
       console.log('Found user:', user ? { id: user.id, email: user.email } : 'No user found');
       
-      if (!user || user.email !== 'admin@demo.com') {
-        console.log('Access denied - not admin user');
+      if (!user) {
+        console.log('User not found in database');
+        return res.status(404).json({ error: 'User not found' });
+      }
+      
+      if (user.email !== 'admin@demo.com') {
+        console.log('Access denied - not admin user. User email:', user.email);
         return res.status(403).json({ error: 'Access denied. Admin privileges required.' });
       }
       
-      console.log('Admin access granted');
+      console.log('Admin access granted for user:', user.email);
       (req as any).adminUser = user;
       next();
     } catch (error) {
       console.error('Admin check error:', error);
-      res.status(500).json({ error: 'Failed to verify admin privileges' });
+      res.status(500).json({ 
+        error: 'Failed to verify admin privileges',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   }
 

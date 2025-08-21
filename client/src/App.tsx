@@ -1,11 +1,13 @@
 import { Router, Route, Switch } from 'wouter';
 import { AuthProvider } from './components/auth/AuthProvider';
-import ProtectedRoute from './components/auth/ProtectedRoute';
 import Layout from './components/layout/Layout';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+
+// Pages
 import Dashboard from './pages/Dashboard';
-import Calendar from './pages/Calendar';
 import Ideation from './pages/Ideation';
 import Strategy from './pages/Strategy';
+import Calendar from './pages/Calendar';
 import Library from './pages/Library';
 import Analytics from './pages/Analytics';
 import Collaboration from './pages/Collaboration';
@@ -20,29 +22,26 @@ function App() {
     <AuthProvider>
       <Router>
         <Switch>
-          {/* Public routes */}
           <Route path="/login" component={Login} />
           <Route path="/signup" component={SignUp} />
           <Route path="/pricing" component={Pricing} />
           <Route path="/success" component={Success} />
           <Route path="/admin">
-            {() => (
-              <ProtectedRoute>
+            <ProtectedRoute>
+              <Layout>
                 <Admin />
-              </ProtectedRoute>
-            )}
+              </Layout>
+            </ProtectedRoute>
           </Route>
-
-          {/* Protected routes */}
-          <Route path="/:rest*">
+          <Route>
             {(params) => (
               <ProtectedRoute>
                 <Layout>
                   <Switch>
                     <Route path="/" component={Dashboard} />
-                    <Route path="/calendar" component={Calendar} />
                     <Route path="/ideation" component={Ideation} />
                     <Route path="/strategy" component={Strategy} />
+                    <Route path="/calendar" component={Calendar} />
                     <Route path="/library" component={Library} />
                     <Route path="/analytics" component={Analytics} />
                     <Route path="/collaboration" component={Collaboration} />
