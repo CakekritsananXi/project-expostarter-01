@@ -744,3 +744,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   return httpServer;
 }
+import express from 'express';
+
+const router = express.Router();
+
+// Performance analytics endpoint
+router.post('/api/analytics/performance', (req, res) => {
+  const {
+    lcp,
+    fcp,
+    fid,
+    cls,
+    ttfb,
+    deviceType,
+    connectionType,
+    viewportWidth,
+    viewportHeight,
+    timestamp,
+    url,
+    userAgent
+  } = req.body;
+
+  // Log performance metrics (in production, you'd store this in a database)
+  console.log('📱 Mobile Performance Metrics:', {
+    deviceType,
+    connectionType,
+    viewport: `${viewportWidth}x${viewportHeight}`,
+    metrics: {
+      lcp: lcp ? `${lcp}ms` : 'N/A',
+      fcp: fcp ? `${fcp}ms` : 'N/A',
+      fid: fid ? `${fid}ms` : 'N/A',
+      cls: cls || 'N/A',
+      ttfb: ttfb ? `${ttfb}ms` : 'N/A'
+    },
+    url,
+    timestamp: new Date(timestamp).toISOString()
+  });
+
+  // Store metrics (implement your preferred analytics service)
+  // Example: await analyticsService.track('mobile_performance', { ... });
+
+  res.json({ success: true, message: 'Performance metrics recorded' });
+});
+
+export default router;

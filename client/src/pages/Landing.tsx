@@ -21,6 +21,7 @@ import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import AnimatedCounter from '../components/ui/AnimatedCounter';
 import FeatureShowcase from '../components/ui/FeatureShowcase';
+import MobilePerformanceDashboard from '../components/ui/MobilePerformanceDashboard';
 
 const Landing = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -84,8 +85,13 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream via-white to-sage/5">
+      {/* Performance Dashboard for Development */}
+      <div className="fixed bottom-4 right-4 z-50 md:hidden">
+        <MobilePerformanceDashboard className="max-w-sm" />
+      </div>
+
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-xl border-b border-neutral-200/30 shadow-sm">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-xl border-b border-neutral-200/30 shadow-sm safe-area-inset-top">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-18">
             <div className="flex items-center space-x-3">

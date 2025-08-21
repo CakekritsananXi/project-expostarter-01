@@ -3,6 +3,7 @@ import { Users, Database, Activity, Settings } from 'lucide-react';
 import { useAuth } from '../components/auth/AuthProvider';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
+import MobilePerformanceDashboard from '../components/ui/MobilePerformanceDashboard'; // Assuming this component exists
 
 interface User {
   id: number;
@@ -261,6 +262,9 @@ const Admin = () => {
             )}
           </div>
         </Card>
+
+        {/* Mobile Performance Monitoring */}
+        <MobilePerformanceDashboard showFullMetrics={true} className="mt-8" />
       </div>
     </div>
   );

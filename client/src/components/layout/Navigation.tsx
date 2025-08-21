@@ -45,49 +45,44 @@ const Navigation = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-1">
-            {navItems.map(({ path, icon: Icon, label }) => {
-              const isActive = location === path;
-              return (
-                <Link
-                  key={path}
-                  href={path}
-                  className={`flex items-center space-x-2 px-3 lg:px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-250 min-h-[44px] ${
-                    isActive
-                      ? 'bg-sage text-white shadow-sm'
-                      : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
-                  }`}
-                >
-                  <Icon className="w-4 h-4 flex-shrink-0" />
-                  <span className="hidden lg:inline">{label}</span>
-                </Link>
-              );
-            })}
+          <div className="hidden md:flex items-center space-x-1">
+            {navItems.map((item) => (
+              <Link key={item.path} href={item.path}>
+                <button className={`flex items-center space-x-2 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 min-h-[44px] touch-manipulation ${
+                  location === item.path 
+                    ? 'text-sage bg-sage/10 shadow-sm' 
+                    : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
+                }`}>
+                  <item.icon className="w-5 h-5 flex-shrink-0" />
+                  <span className="hidden lg:inline">{item.label}</span>
+                </button>
+              </Link>
+            ))}
             {user?.email === 'admin@demo.com' && (
               <Link
                 href="/admin"
-                className={`flex items-center space-x-2 px-3 lg:px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-250 min-h-[44px] ${
+                className={`flex items-center space-x-2 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 min-h-[44px] touch-manipulation ${
                   location === '/admin'
                     ? 'bg-sage text-white shadow-sm'
                     : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
                 }`}
               >
-                <Users className="w-4 h-4 flex-shrink-0" />
+                <Users className="w-5 h-5 flex-shrink-0" />
                 <span className="hidden lg:inline">Admin</span>
               </Link>
             )}
             <Link
                   href="/pricing"
-                  className="flex items-center space-x-2 px-3 lg:px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-250 min-h-[44px] text-neutral-600 hover:text-sage hover:bg-sage/5"
+                  className="flex items-center space-x-2 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 min-h-[44px] touch-manipulation text-neutral-600 hover:text-sage hover:bg-sage/5"
                 >
-                  <DollarSign className="w-4 h-4 flex-shrink-0" />
+                  <DollarSign className="w-5 h-5 flex-shrink-0" />
                   <span className="hidden lg:inline">Pricing</span>
                 </Link>
             <Link
                   href="/subscription"
-                  className="flex items-center space-x-2 px-3 lg:px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-250 min-h-[44px] text-neutral-600 hover:text-sage hover:bg-sage/5"
+                  className="flex items-center space-x-2 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 min-h-[44px] touch-manipulation text-neutral-600 hover:text-sage hover:bg-sage/5"
                 >
-                  <CreditCard className="w-4 h-4 flex-shrink-0" />
+                  <CreditCard className="w-5 h-5 flex-shrink-0" />
                   <span className="hidden lg:inline">Subscription</span>
                 </Link>
           </div>
