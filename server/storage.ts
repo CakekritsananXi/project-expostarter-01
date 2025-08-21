@@ -1,10 +1,10 @@
-import { 
-  users, 
-  sessions, 
-  stripeCustomers, 
-  stripeSubscriptions, 
+import {
+  users,
+  sessions,
+  stripeCustomers,
+  stripeSubscriptions,
   stripeOrders,
-  type User, 
+  type User,
   type InsertUser,
   type Session,
   type InsertSession,
@@ -25,26 +25,27 @@ export interface IStorage {
   getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: number, updates: Partial<InsertUser>): Promise<User | undefined>;
-  
+
   // Session operations
   createSession(session: InsertSession): Promise<Session>;
   getSession(id: string): Promise<Session | undefined>;
   deleteSession(id: string): Promise<void>;
   deleteExpiredSessions(): Promise<void>;
-  
+
   // Stripe customer operations
   getStripeCustomer(userId: number): Promise<StripeCustomer | undefined>;
   getStripeCustomerByCustomerId(customerId: string): Promise<StripeCustomer | undefined>;
   createStripeCustomer(customer: InsertStripeCustomer): Promise<StripeCustomer>;
-  
+
   // Stripe subscription operations
   getStripeSubscription(customerId: string): Promise<StripeSubscription | undefined>;
   createStripeSubscription(subscription: InsertStripeSubscription): Promise<StripeSubscription>;
   updateStripeSubscription(customerId: string, updates: Partial<InsertStripeSubscription>): Promise<StripeSubscription | undefined>;
-  
+
   // Stripe order operations
   createStripeOrder(order: InsertStripeOrder): Promise<StripeOrder>;
   getStripeOrders(customerId: string): Promise<StripeOrder[]>;
+  getAllUsers(): Promise<User[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -166,6 +167,12 @@ export class DatabaseStorage implements IStorage {
       .select()
       .from(stripeOrders)
       .where(and(eq(stripeOrders.customerId, customerId), isNull(stripeOrders.deletedAt)));
+  }
+
+  async getAllUsers() {
+    return await db.query.users.findMany({
+      orderBy: (users, { desc }) => [desc(users.createdAt)],
+    });
   }
 }
 

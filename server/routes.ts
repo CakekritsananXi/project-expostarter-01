@@ -249,6 +249,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin routes
+  app.get("/api/admin/users", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      
+      // Check if user is admin (you can enhance this logic)
+      const user = await storage.getUser(userId);
+      if (!user || user.email !== 'admin@demo.com') {
+        return res.status(403).json({ error: 'Access denied. Admin privileges required.' });
+      }
+
+      const users = await storage.getAllUsers();
+      const safeUsers = users.map(user => ({
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        createdAt: user.createdAt,
+      }));
+
+      res.json({ users: safeUsers });
+    } catch (error) {
+      console.error('Get users error:', error);
+      res.status(500).json({ error: 'Failed to get users' });
+    }
+  });
+
   // Helper functions
   async function syncCustomerSubscription(customerId: string) {
     try {

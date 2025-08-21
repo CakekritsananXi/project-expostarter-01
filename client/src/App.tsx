@@ -13,6 +13,7 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Pricing from './pages/Pricing';
 import Success from './pages/Success';
+import Admin from './pages/Admin';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/signup" component={SignUp} />
           <Route path="/pricing" component={Pricing} />
           <Route path="/success" component={Success} />
+          <Route path="/admin" component={Admin} />
 
           {/* Protected routes */}
           <Route path="/:rest*">

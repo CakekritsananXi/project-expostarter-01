@@ -27,6 +27,10 @@ const Navigation = () => {
     { path: '/collaboration', icon: Users, label: 'Team' },
   ];
 
+  // Assume 'user' is available in the scope, e.g., from context or props
+  // For demonstration, let's mock a user object. In a real app, this would come from authentication state.
+  const user = { email: 'admin@demo.com' };
+
   return (
     <nav className="bg-white/80 backdrop-blur-sm border-b border-neutral-200/50 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -58,6 +62,19 @@ const Navigation = () => {
                 </Link>
               );
             })}
+            {user?.email === 'admin@demo.com' && (
+              <Link
+                href="/admin"
+                className={`flex items-center space-x-2 px-3 lg:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-250 ${
+                  location === '/admin'
+                    ? 'bg-sage text-white shadow-sm'
+                    : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
+                }`}
+              >
+                <Users className="w-4 h-4" /> {/* Using Users icon for Admin as an example */}
+                <span className="hidden lg:inline">Admin</span>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -97,6 +114,20 @@ const Navigation = () => {
                   </Link>
                 );
               })}
+              {user?.email === 'admin@demo.com' && (
+                <Link
+                  href="/admin"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`flex items-center space-x-3 px-3 py-3 rounded-xl text-base font-medium transition-all duration-250 ${
+                    location === '/admin'
+                      ? 'bg-sage text-white shadow-sm'
+                      : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
+                  }`}
+                >
+                  <Users className="w-5 h-5" /> {/* Using Users icon for Admin as an example */}
+                  <span>Admin</span>
+                </Link>
+              )}
             </div>
           </div>
         )}
