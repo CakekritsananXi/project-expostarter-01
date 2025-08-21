@@ -1,3 +1,169 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    /* Brand Colors */
+    --color-sage: 146 158 145;
+    --color-warm-blue: 76 132 164;
+    --color-warm-amber: 217 166 71;
+    --color-soft-emerald: 118 165 145;
+    --color-cream: 249 247 242;
+    
+    /* Neutral Colors */
+    --color-neutral-50: 250 250 250;
+    --color-neutral-100: 245 245 245;
+    --color-neutral-200: 229 229 229;
+    --color-neutral-300: 212 212 212;
+    --color-neutral-400: 163 163 163;
+    --color-neutral-500: 115 115 115;
+    --color-neutral-600: 82 82 82;
+    --color-neutral-700: 64 64 64;
+    --color-neutral-800: 38 38 38;
+    --color-neutral-900: 23 23 23;
+    
+    /* Shadows */
+    --shadow-soft: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-medium: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-large: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  }
+
+  * {
+    border-color: rgb(var(--color-neutral-200));
+  }
+
+  body {
+    color: rgb(var(--color-neutral-700));
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .bg-sage {
+    background-color: rgb(var(--color-sage));
+  }
+  
+  .bg-warm-blue {
+    background-color: rgb(var(--color-warm-blue));
+  }
+  
+  .bg-warm-amber {
+    background-color: rgb(var(--color-warm-amber));
+  }
+  
+  .bg-soft-emerald {
+    background-color: rgb(var(--color-soft-emerald));
+  }
+  
+  .bg-cream {
+    background-color: rgb(var(--color-cream));
+  }
+  
+  .text-sage {
+    color: rgb(var(--color-sage));
+  }
+  
+  .text-warm-blue {
+    color: rgb(var(--color-warm-blue));
+  }
+  
+  .text-warm-amber {
+    color: rgb(var(--color-warm-amber));
+  }
+  
+  .text-soft-emerald {
+    color: rgb(var(--color-soft-emerald));
+  }
+  
+  .border-sage {
+    border-color: rgb(var(--color-sage));
+  }
+  
+  .ring-sage {
+    --tw-ring-color: rgb(var(--color-sage));
+  }
+  
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .shadow-medium {
+    box-shadow: var(--shadow-medium);
+  }
+  
+  .shadow-large {
+    box-shadow: var(--shadow-large);
+  }
+  
+  .duration-250 {
+    transition-duration: 250ms;
+  }
+
+  /* Custom animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(146, 158, 145, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(146, 158, 145, 0.8);
+    }
+  }
+
+  .animate-fadeInUp {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  /* Gradient text utilities */
+  .gradient-sage-blue {
+    background: linear-gradient(135deg, rgb(var(--color-sage)), rgb(var(--color-warm-blue)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  /* Smooth scrolling */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+}

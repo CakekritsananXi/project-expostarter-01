@@ -16,7 +16,9 @@ import SignUp from './pages/SignUp';
 import Pricing from './pages/Pricing';
 import Success from './pages/Success';
 import Admin from './pages/Admin';
-import SubscriptionManager from './pages/SubscriptionManager'; // Assuming this component exists
+import Landing from './pages/Landing';
+import MobileLanding from './pages/MobileLanding';
+import SubscriptionManager from './pages/SubscriptionManager';
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/signup" component={SignUp} />
           <Route path="/pricing" component={Pricing} />
+          <Route path="/landing" component={Landing} />
+          <Route path="/mobile" component={MobileLanding} />
 
           {/* Protected routes */}
           <Route path="/success">
