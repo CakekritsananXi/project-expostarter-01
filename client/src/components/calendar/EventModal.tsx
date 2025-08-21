@@ -3,7 +3,24 @@ import { X, Calendar, Clock, FileText, Users, Target, AlertCircle } from 'lucide
 import { format } from 'date-fns';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
-import { insertCalendarEventSchema } from '../../lib/validations';
+// Simple validation without external schema
+const validateEventData = (data: any) => {
+  const errors: Record<string, string> = {};
+  
+  if (!data.title?.trim()) {
+    errors.title = 'Title is required';
+  }
+  
+  if (!data.eventDate) {
+    errors.eventDate = 'Date is required';
+  }
+  
+  if (!data.allDay && !data.duration) {
+    errors.duration = 'Duration is required for timed events';
+  }
+  
+  return { isValid: Object.keys(errors).length === 0, errors };
+};
 
 interface CalendarEvent {
   id?: number;
@@ -91,32 +108,15 @@ const EventModal: React.FC<EventModalProps> = ({
   ];
 
   const validateForm = () => {
-    try {
-      insertCalendarEventSchema.parse({
-        title: formData.title,
-        description: formData.description,
-        eventDate: formData.eventDate,
-        eventType: formData.eventType,
-        status: formData.status,
-        allDay: formData.allDay,
-        duration: formData.allDay ? undefined : formData.duration,
-        postId: formData.postId,
-        campaignId: formData.campaignId,
-      });
-      setErrors({});
-      return true;
-    } catch (error: any) {
-      if (error.errors) {
-        const newErrors: Record<string, string> = {};
-        error.errors.forEach((err: any) => {
-          if (err.path) {
-            newErrors[err.path[0]] = err.message;
-          }
-        });
-        setErrors(newErrors);
-      }
-      return false;
-    }
+    const { isValid, errors: validationErrors } = validateEventData({
+      title: formData.title,
+      eventDate: formData.eventDate,
+      allDay: formData.allDay,
+      duration: formData.duration,
+    });
+    
+    setErrors(validationErrors);
+    return isValid;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

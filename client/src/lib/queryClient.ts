@@ -15,7 +15,7 @@ export const queryClient = new QueryClient({
 
 // API request helper function
 export const apiRequest = async (url: string, options: RequestInit = {}) => {
-  const token = localStorage.getItem('authToken');
+  const token = localStorage.getItem('token'); // Changed from 'authToken' to 'token'
   
   const headers = {
     'Content-Type': 'application/json',
