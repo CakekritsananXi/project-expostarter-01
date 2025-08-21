@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, useLocation } from 'wouter';
 import {
   Calendar,
   Lightbulb,
@@ -15,6 +15,7 @@ import {
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [location] = useLocation();
 
   const navItems = [
     { path: '/', icon: Home, label: 'Dashboard' },
@@ -40,22 +41,23 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-1">
-            {navItems.map(({ path, icon: Icon, label }) => (
-              <NavLink
-                key={path}
-                to={path}
-                className={({ isActive }) =>
-                  `flex items-center space-x-2 px-3 lg:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-250 ${
+            {navItems.map(({ path, icon: Icon, label }) => {
+              const isActive = location === path;
+              return (
+                <Link
+                  key={path}
+                  href={path}
+                  className={`flex items-center space-x-2 px-3 lg:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-250 ${
                     isActive
                       ? 'bg-sage text-white shadow-sm'
                       : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
-                  }`
-                }
-              >
-                <Icon className="w-4 h-4" />
-                <span className="hidden lg:inline">{label}</span>
-              </NavLink>
-            ))}
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span className="hidden lg:inline">{label}</span>
+                </Link>
+              );
+            })}
           </div>
 
           {/* Mobile Menu Button */}
@@ -77,23 +79,24 @@ const Navigation = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-neutral-200/50 bg-white/95 backdrop-blur-sm">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {navItems.map(({ path, icon: Icon, label }) => (
-                <NavLink
-                  key={path}
-                  to={path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={({ isActive }) =>
-                    `flex items-center space-x-3 px-3 py-3 rounded-xl text-base font-medium transition-all duration-250 ${
+              {navItems.map(({ path, icon: Icon, label }) => {
+                const isActive = location === path;
+                return (
+                  <Link
+                    key={path}
+                    href={path}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`flex items-center space-x-3 px-3 py-3 rounded-xl text-base font-medium transition-all duration-250 ${
                       isActive
                         ? 'bg-sage text-white shadow-sm'
                         : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
-                    }`
-                  }
-                >
-                  <Icon className="w-5 h-5" />
-                  <span>{label}</span>
-                </NavLink>
-              ))}
+                    }`}
+                  >
+                    <Icon className="w-5 h-5" />
+                    <span>{label}</span>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         )}

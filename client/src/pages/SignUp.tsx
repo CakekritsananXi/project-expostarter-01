@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Redirect } from 'wouter';
 import { PenTool } from 'lucide-react';
 import { useAuth } from '../components/auth/AuthProvider';
 import SignUpForm from '../components/auth/SignUpForm';
@@ -16,7 +16,7 @@ const SignUp = () => {
   }
 
   if (user) {
-    return <Navigate to="/" replace />;
+    return <Redirect to="/" />;
   }
 
   return (

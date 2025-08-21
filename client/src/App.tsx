@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Router, Route, Switch } from 'wouter';
 import { AuthProvider } from './components/auth/AuthProvider';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Layout from './components/layout/Layout';
@@ -18,30 +18,32 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <Routes>
+        <Switch>
           {/* Public routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/success" element={<Success />} />
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={SignUp} />
+          <Route path="/pricing" component={Pricing} />
+          <Route path="/success" component={Success} />
 
           {/* Protected routes */}
-          <Route path="/*" element={
-            <ProtectedRoute>
-              <Layout>
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/calendar" element={<Calendar />} />
-                  <Route path="/ideation" element={<Ideation />} />
-                  <Route path="/strategy" element={<Strategy />} />
-                  <Route path="/library" element={<Library />} />
-                  <Route path="/analytics" element={<Analytics />} />
-                  <Route path="/collaboration" element={<Collaboration />} />
-                </Routes>
-              </Layout>
-            </ProtectedRoute>
-          } />
-        </Routes>
+          <Route path="/:rest*">
+            {(params) => (
+              <ProtectedRoute>
+                <Layout>
+                  <Switch>
+                    <Route path="/" component={Dashboard} />
+                    <Route path="/calendar" component={Calendar} />
+                    <Route path="/ideation" component={Ideation} />
+                    <Route path="/strategy" component={Strategy} />
+                    <Route path="/library" component={Library} />
+                    <Route path="/analytics" component={Analytics} />
+                    <Route path="/collaboration" component={Collaboration} />
+                  </Switch>
+                </Layout>
+              </ProtectedRoute>
+            )}
+          </Route>
+        </Switch>
       </Router>
     </AuthProvider>
   );

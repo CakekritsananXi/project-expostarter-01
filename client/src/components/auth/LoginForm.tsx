@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'wouter';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from './AuthProvider';
 import Button from '../ui/Button';

@@ -1,10 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
-import { supabase } from '../../lib/supabase';
+import { authAPI, type User } from '../../lib/auth';
 
 interface AuthContextType {
   user: User | null;
-  session: Session | null;
   loading: boolean;
   signUp: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
@@ -27,67 +25,80 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
-      setSession(initialSession);
-      setUser(initialSession?.user ?? null);
-      setLoading(false);
-    });
+    // Check for existing token and get current user
+    const checkAuth = async () => {
+      try {
+        const token = authAPI.getToken();
+        if (token) {
+          try {
+            const { user: currentUser } = await authAPI.getCurrentUser();
+            setUser(currentUser);
+          } catch (error) {
+            // Token is invalid, clear it
+            console.warn('Invalid auth token, clearing:', error);
+            authAPI.clearToken();
+            setUser(null);
+          }
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event: AuthChangeEvent, session: Session | null) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+    checkAuth();
   }, []);
 
   const signUp = async (email: string, password: string, firstName: string, lastName: string) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          first_name: firstName,
-          last_name: lastName,
-        },
-      },
-    });
-
-    if (error) {
+    try {
+      const { user, token } = await authAPI.signUp({
+        email,
+        password,
+        firstName,
+        lastName,
+      });
+      
+      authAPI.setToken(token);
+      setUser(user);
+    } catch (error) {
       throw error;
     }
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
+    try {
+      const { user, token } = await authAPI.signIn({
+        email,
+        password,
+      });
+      
+      authAPI.setToken(token);
+      setUser(user);
+    } catch (error) {
       throw error;
     }
   };
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      throw error;
+    try {
+      await authAPI.signOut();
+      setUser(null);
+    } catch (error) {
+      // Even if the API call fails, clear local state
+      authAPI.clearToken();
+      setUser(null);
     }
   };
 
   const value = {
     user,
-    session,
     loading,
     signUp,
     signIn,

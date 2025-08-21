@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, LinkProps } from 'react-router-dom'; // Import LinkProps
+import { Link } from 'wouter';
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import { useAuth } from '../components/auth/AuthProvider';
 import { getUserSubscription } from '../lib/stripe';
@@ -63,27 +63,27 @@ const Success = () => {
           )}
 
           <div className="space-y-3">
-            <Button
-              as={Link}
-              to="/"
-              variant="primary"
-              size="lg"
-              className="w-full"
-              icon={ArrowRight}
-              iconPosition="right"
-            >
-              Go to Dashboard
-            </Button>
+            <Link href="/">
+              <Button
+                variant="primary"
+                size="lg"
+                className="w-full"
+                icon={ArrowRight}
+                iconPosition="right"
+              >
+                Go to Dashboard
+              </Button>
+            </Link>
 
-            <Button
-              as={Link}
-              to="/strategy"
-              variant="outline"
-              size="lg"
-              className="w-full"
-            >
-              Start Planning Content
-            </Button>
+            <Link href="/strategy">
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full"
+              >
+                Start Planning Content
+              </Button>
+            </Link>
           </div>
         </Card>
       </div>
