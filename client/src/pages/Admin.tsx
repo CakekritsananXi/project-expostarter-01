@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Users, Database, Activity, Settings } from 'lucide-react';
 import { useAuth } from '../components/auth/AuthProvider';
@@ -29,7 +28,7 @@ const Admin = () => {
     try {
       const token = localStorage.getItem('token');
       console.log('Token available:', !!token);
-      
+
       if (!token) {
         throw new Error('No authentication token found');
       }
@@ -48,21 +47,21 @@ const Admin = () => {
       if (!response.ok) {
         const errorText = await response.text();
         console.log('Error response text:', errorText);
-        
+
         let errorData;
         try {
           errorData = JSON.parse(errorText);
         } catch {
           errorData = { error: errorText || 'Unknown error' };
         }
-        
+
         if (response.status === 403) {
           throw new Error('Access denied. Admin privileges required.');
         }
         if (response.status === 401) {
           throw new Error('Authentication failed. Please sign in again.');
         }
-        
+
         throw new Error(errorData.error || `Failed to fetch users (${response.status})`);
       }
 
@@ -111,60 +110,60 @@ const Admin = () => {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+          <Card className="p-4 sm:p-6">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-sage/10 rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-sage/10 rounded-lg flex items-center justify-center flex-shrink-0">
                 <Users className="w-6 h-6 text-sage" />
               </div>
-              <div className="ml-4">
+              <div className="ml-4 min-w-0">
                 <p className="text-sm text-neutral-600">Total Users</p>
-                <p className="text-2xl font-bold text-neutral-900">{users.length}</p>
+                <p className="text-xl sm:text-2xl font-bold text-neutral-900">{users.length}</p>
               </div>
             </div>
           </Card>
 
-          <Card className="p-6">
+          <Card className="p-4 sm:p-6">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
                 <Database className="w-6 h-6 text-blue-600" />
               </div>
-              <div className="ml-4">
+              <div className="ml-4 min-w-0">
                 <p className="text-sm text-neutral-600">Database</p>
-                <p className="text-2xl font-bold text-neutral-900">Active</p>
+                <p className="text-xl sm:text-2xl font-bold text-neutral-900">Active</p>
               </div>
             </div>
           </Card>
 
-          <Card className="p-6">
+          <Card className="p-4 sm:p-6">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
                 <Activity className="w-6 h-6 text-green-600" />
               </div>
-              <div className="ml-4">
-                <p className="text-sm text-neutral-600">Status</p>
-                <p className="text-2xl font-bold text-neutral-900">Online</p>
+              <div className="ml-4 min-w-0">
+                <p className="text-sm text-neutral-600">System Status</p>
+                <p className="text-xl sm:text-2xl font-bold text-neutral-900">Online</p>
               </div>
             </div>
           </Card>
 
-          <Card className="p-6">
+          <Card className="p-4 sm:p-6">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <Settings className="w-6 h-6 text-purple-600" />
+              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Settings className="w-6 h-6 text-orange-600" />
               </div>
-              <div className="ml-4">
-                <p className="text-sm text-neutral-600">System</p>
-                <p className="text-2xl font-bold text-neutral-900">Healthy</p>
+              <div className="ml-4 min-w-0">
+                <p className="text-sm text-neutral-600">Configuration</p>
+                <p className="text-xl sm:text-2xl font-bold text-neutral-900">Ready</p>
               </div>
             </div>
           </Card>
         </div>
 
         {/* System Information */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Card>
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <h2 className="text-xl font-semibold text-neutral-900 mb-4">System Information</h2>
               <div className="space-y-3">
                 <div className="flex justify-between">
@@ -188,7 +187,7 @@ const Admin = () => {
           </Card>
 
           <Card>
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <h2 className="text-xl font-semibold text-neutral-900 mb-4">Quick Actions</h2>
               <div className="space-y-3">
                 <Button onClick={fetchUsers} className="w-full justify-start">
@@ -210,10 +209,10 @@ const Admin = () => {
 
         {/* Users Table */}
         <Card>
-          <div className="p-6">
-            <div className="flex justify-between items-center mb-6">
+          <div className="p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-2 sm:space-y-0">
               <h2 className="text-xl font-semibold text-neutral-900">Users</h2>
-              <Button onClick={fetchUsers} variant="outline">
+              <Button onClick={fetchUsers} variant="outline" className="w-full sm:w-auto">
                 Refresh
               </Button>
             </div>
@@ -227,28 +226,28 @@ const Admin = () => {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-neutral-200">
-                      <th className="text-left py-3 px-4 font-medium text-neutral-700">ID</th>
-                      <th className="text-left py-3 px-4 font-medium text-neutral-700">Name</th>
-                      <th className="text-left py-3 px-4 font-medium text-neutral-700">Email</th>
-                      <th className="text-left py-3 px-4 font-medium text-neutral-700">Created</th>
-                      <th className="text-left py-3 px-4 font-medium text-neutral-700">Status</th>
+                      <th className="text-left py-3 px-4 font-medium text-neutral-700 whitespace-nowrap">ID</th>
+                      <th className="text-left py-3 px-4 font-medium text-neutral-700 whitespace-nowrap">Name</th>
+                      <th className="text-left py-3 px-4 font-medium text-neutral-700 whitespace-nowrap">Email</th>
+                      <th className="text-left py-3 px-4 font-medium text-neutral-700 whitespace-nowrap">Created</th>
+                      <th className="text-left py-3 px-4 font-medium text-neutral-700 whitespace-nowrap">Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {users.map((user) => (
                       <tr key={user.id} className="border-b border-neutral-100 hover:bg-neutral-50">
-                        <td className="py-3 px-4 text-neutral-600">{user.id}</td>
-                        <td className="py-3 px-4 text-neutral-900">
+                        <td className="py-3 px-4 text-neutral-600 whitespace-nowrap">{user.id}</td>
+                        <td className="py-3 px-4 text-neutral-900 whitespace-nowrap">
                           {user.firstName} {user.lastName}
                         </td>
-                        <td className="py-3 px-4 text-neutral-600">{user.email}</td>
-                        <td className="py-3 px-4 text-neutral-600">
+                        <td className="py-3 px-4 text-neutral-600 whitespace-nowrap">{user.email}</td>
+                        <td className="py-3 px-4 text-neutral-600 whitespace-nowrap">
                           {new Date(user.createdAt).toLocaleDateString()}
                         </td>
-                        <td className="py-3 px-4">
+                        <td className="py-3 px-4 whitespace-nowrap">
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            user.email === 'admin@demo.com' 
-                              ? 'bg-purple-100 text-purple-800' 
+                            user.email === 'admin@demo.com'
+                              ? 'bg-purple-100 text-purple-800'
                               : 'bg-green-100 text-green-800'
                           }`}>
                             {user.email === 'admin@demo.com' ? 'Admin' : 'Active'}

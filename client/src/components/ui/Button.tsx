@@ -39,7 +39,7 @@ interface CustomButtonProps {
 type ButtonVariantProps = VariantProps<typeof buttonVariants> & CustomButtonProps;
 
 // Define the polymorphic component type
-type ButtonProps<T extends React.ElementType> = ButtonVariantProps & 
+type ButtonProps<T extends React.ElementType> = ButtonVariantProps &
   Omit<React.ComponentPropsWithoutRef<T>, keyof ButtonVariantProps>;
 
 const Button = React.forwardRef(

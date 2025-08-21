@@ -50,13 +50,13 @@ const Navigation = () => {
                 <Link
                   key={path}
                   href={path}
-                  className={`flex items-center space-x-2 px-3 lg:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-250 ${
+                  className={`flex items-center space-x-2 px-3 lg:px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-250 min-h-[44px] ${
                     isActive
                       ? 'bg-sage text-white shadow-sm'
                       : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-4 h-4 flex-shrink-0" />
                   <span className="hidden lg:inline">{label}</span>
                 </Link>
               );
@@ -64,13 +64,13 @@ const Navigation = () => {
             {user?.email === 'admin@demo.com' && (
               <Link
                 href="/admin"
-                className={`flex items-center space-x-2 px-3 lg:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-250 ${
+                className={`flex items-center space-x-2 px-3 lg:px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-250 min-h-[44px] ${
                   location === '/admin'
                     ? 'bg-sage text-white shadow-sm'
                     : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
                 }`}
               >
-                <Users className="w-4 h-4" /> {/* Using Users icon for Admin as an example */}
+                <Users className="w-4 h-4 flex-shrink-0" />
                 <span className="hidden lg:inline">Admin</span>
               </Link>
             )}
@@ -80,7 +80,7 @@ const Navigation = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-xl text-neutral-600 hover:text-sage hover:bg-sage/5 transition-all duration-250"
+              className="p-3 rounded-xl text-neutral-600 hover:text-sage hover:bg-sage/5 transition-all duration-250 min-h-[44px] min-w-[44px] flex items-center justify-center"
             >
               {isMobileMenuOpen ? (
                 <X className="w-6 h-6" />
@@ -94,7 +94,7 @@ const Navigation = () => {
         {/* Mobile Navigation Menu */}
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-neutral-200/50 bg-white/95 backdrop-blur-sm">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+            <div className="px-3 pt-3 pb-4 space-y-2">
               {navItems.map(({ path, icon: Icon, label }) => {
                 const isActive = location === path;
                 return (
@@ -102,13 +102,13 @@ const Navigation = () => {
                     key={path}
                     href={path}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex items-center space-x-3 px-3 py-3 rounded-xl text-base font-medium transition-all duration-250 ${
+                    className={`flex items-center space-x-4 px-4 py-4 rounded-xl text-base font-medium transition-all duration-250 min-h-[56px] ${
                       isActive
                         ? 'bg-sage text-white shadow-sm'
                         : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
                     }`}
                   >
-                    <Icon className="w-5 h-5" />
+                    <Icon className="w-5 h-5 flex-shrink-0" />
                     <span>{label}</span>
                   </Link>
                 );
@@ -117,12 +117,15 @@ const Navigation = () => {
                 <Link
                   href="/admin"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center space-x-3 px-3 py-3 rounded-xl text-base font-medium transition-all duration-250 ${
+                  className={`flex items-center space-x-4 px-4 py-4 rounded-xl text-base font-medium transition-all duration-250 min-h-[56px] ${
                     location === '/admin'
                       ? 'bg-sage text-white shadow-sm'
                       : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
                   }`}
                 >
+                  <Users className="w-5 h-5 flex-shrink-0" />
+                  <span>Admin</span>
+                </Link>
                   <Users className="w-5 h-5" /> {/* Using Users icon for Admin as an example */}
                   <span>Admin</span>
                 </Link>
