@@ -85,24 +85,33 @@ const Landing = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream via-white to-sage/5">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-neutral-200/50">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-xl border-b border-neutral-200/30 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-sage rounded-lg flex items-center justify-center">
-                <Smartphone className="w-5 h-5 text-white" />
+          <div className="flex justify-between items-center h-18">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-sage to-warm-blue rounded-xl flex items-center justify-center shadow-lg">
+                <Smartphone className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-neutral-900">ContentFlow</span>
+              <span className="text-xl font-bold text-neutral-900 tracking-tight">ContentFlow</span>
             </div>
-            <div className="hidden md:flex items-center space-x-8">
-              <a href="#features" className="text-neutral-600 hover:text-sage transition-colors">Features</a>
-              <a href="#download" className="text-neutral-600 hover:text-sage transition-colors">Download</a>
-              <a href="#testimonials" className="text-neutral-600 hover:text-sage transition-colors">Reviews</a>
+            <div className="hidden md:flex items-center space-x-10">
+              <a href="#features" className="text-neutral-600 hover:text-sage transition-all duration-300 font-medium relative group">
+                Features
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-sage transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a href="#download" className="text-neutral-600 hover:text-sage transition-all duration-300 font-medium relative group">
+                Download
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-sage transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a href="#testimonials" className="text-neutral-600 hover:text-sage transition-all duration-300 font-medium relative group">
+                Reviews
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-sage transition-all duration-300 group-hover:w-full"></span>
+              </a>
               <Link href="/login">
-                <Button variant="outline" size="sm">Sign In</Button>
+                <Button variant="outline" size="sm" className="hover:shadow-md transition-all duration-300">Sign In</Button>
               </Link>
               <Link href="/signup">
-                <Button variant="primary" size="sm">Get Started</Button>
+                <Button variant="primary" size="sm" className="shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">Get Started</Button>
               </Link>
             </div>
           </div>
@@ -110,49 +119,52 @@ const Landing = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <section className="pt-36 pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-sage/3 via-white to-warm-blue/5"></div>
+        <div className="absolute top-20 right-20 w-72 h-72 bg-sage/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-40 left-10 w-96 h-96 bg-warm-blue/5 rounded-full blur-3xl"></div>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-              <div className="inline-flex items-center px-4 py-2 bg-sage/10 rounded-full text-sage text-sm font-medium mb-6">
-                <Star className="w-4 h-4 mr-2" />
+              <div className="inline-flex items-center px-5 py-3 bg-gradient-to-r from-sage/10 to-warm-blue/10 rounded-full text-sage text-sm font-semibold mb-8 border border-sage/20 shadow-sm">
+                <Star className="w-4 h-4 mr-2 fill-current" />
                 #1 Content Planning App
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold text-neutral-900 mb-6 leading-tight">
+              <h1 className="text-5xl md:text-7xl font-bold text-neutral-900 mb-8 leading-[1.1] tracking-tight">
                 Plan. Create. 
-                <span className="bg-gradient-to-r from-sage to-warm-blue bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-sage via-warm-blue to-sage bg-clip-text text-transparent block mt-2">
                   Succeed.
                 </span>
               </h1>
-              <p className="text-xl text-neutral-600 mb-8 leading-relaxed">
+              <p className="text-xl md:text-2xl text-neutral-600 mb-10 leading-relaxed font-light max-w-lg">
                 The ultimate content planning platform that helps creators, marketers, and teams build engaging content strategies with AI-powered insights.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Button size="lg" className="group">
+              <div className="flex flex-col sm:flex-row gap-5 mb-12">
+                <Button size="lg" className="group bg-gradient-to-r from-sage to-warm-blue hover:from-sage/90 hover:to-warm-blue/90 shadow-xl hover:shadow-2xl transition-all duration-300 px-8 py-4 text-lg font-semibold">
                   Download for Free
-                  <Download className="w-5 h-5 ml-2 group-hover:translate-y-0.5 transition-transform" />
+                  <Download className="w-5 h-5 ml-3 group-hover:translate-y-0.5 transition-transform" />
                 </Button>
-                <Button variant="outline" size="lg" className="group">
-                  <PlayCircle className="w-5 h-5 mr-2" />
+                <Button variant="outline" size="lg" className="group border-2 hover:bg-neutral-50 shadow-lg hover:shadow-xl transition-all duration-300 px-8 py-4 text-lg font-semibold">
+                  <PlayCircle className="w-5 h-5 mr-3" />
                   Watch Demo
                 </Button>
               </div>
-              <div className="flex items-center space-x-8 text-sm text-neutral-600">
-                <div className="flex items-center space-x-2">
-                  <div className="flex -space-x-2">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-10 text-sm text-neutral-600">
+                <div className="flex items-center space-x-3">
+                  <div className="flex -space-x-3">
                     {[1,2,3,4].map(i => (
-                      <div key={i} className="w-8 h-8 bg-sage rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-medium">
+                      <div key={i} className="w-10 h-10 bg-gradient-to-br from-sage to-warm-blue rounded-full border-3 border-white flex items-center justify-center text-white text-sm font-bold shadow-lg">
                         {i}
                       </div>
                     ))}
                   </div>
-                  <span>10K+ creators</span>
+                  <span className="font-medium">10K+ creators</span>
                 </div>
-                <div className="flex items-center space-x-1">
+                <div className="flex items-center space-x-2">
                   {[1,2,3,4,5].map(i => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400 drop-shadow-sm" />
                   ))}
-                  <span className="ml-2">4.9 rating</span>
+                  <span className="ml-2 font-medium">4.9 rating</span>
                 </div>
               </div>
             </div>
@@ -161,10 +173,10 @@ const Landing = () => {
             <div className={`relative transform transition-all duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
               <div className="relative mx-auto w-80 h-96">
                 {/* Phone Frame */}
-                <div className="absolute inset-0 bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-[3rem] p-2 shadow-2xl">
-                  <div className="w-full h-full bg-white rounded-[2.5rem] overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-neutral-800 via-neutral-700 to-neutral-900 rounded-[3rem] p-3 shadow-[0_25px_60px_-12px_rgba(0,0,0,0.4)]">
+                  <div className="w-full h-full bg-white rounded-[2.5rem] overflow-hidden relative ring-1 ring-neutral-200">
                     {/* Notch */}
-                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl"></div>
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-7 bg-black rounded-b-3xl shadow-lg"></div>
                     
                     {/* Screen Content */}
                     <div className="p-6 pt-10 h-full bg-gradient-to-br from-sage/5 to-warm-blue/5">
@@ -213,19 +225,20 @@ const Landing = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-sage text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-sage to-warm-blue opacity-90"></div>
+      <section className="py-24 bg-sage text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-sage via-warm-blue to-sage opacity-95"></div>
         <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full animate-float"></div>
-          <div className="absolute bottom-20 right-20 w-24 h-24 bg-white/10 rounded-full animate-float" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-white/10 rounded-full animate-float" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute top-16 left-16 w-40 h-40 bg-white/8 rounded-full animate-float blur-sm"></div>
+          <div className="absolute bottom-24 right-24 w-32 h-32 bg-white/12 rounded-full animate-float blur-sm" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-white/10 rounded-full animate-float blur-sm" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute top-32 right-1/3 w-16 h-16 bg-white/15 rounded-full animate-float blur-sm" style={{ animationDelay: '3s' }}></div>
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
               Trusted by creators worldwide
             </h2>
-            <p className="text-xl text-white/90">
+            <p className="text-xl md:text-2xl text-white/90 font-light">
               Join thousands of successful content creators and teams
             </p>
           </div>
@@ -276,23 +289,23 @@ const Landing = () => {
       </section>
 
       {/* Feature Grid */}
-      <section className="py-20 bg-gradient-to-br from-neutral-50 to-sage/5">
+      <section className="py-24 bg-gradient-to-br from-neutral-50 via-white to-sage/8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-10">
             {features.map((feature, index) => (
               <div 
                 key={index}
-                className={`text-center cursor-pointer transition-all duration-300 hover:scale-105 ${
-                  activeFeature === index ? 'ring-2 ring-sage shadow-xl rounded-2xl' : ''
+                className={`text-center cursor-pointer transition-all duration-500 hover:scale-105 hover:-translate-y-2 ${
+                  activeFeature === index ? 'ring-2 ring-sage/50 shadow-2xl rounded-3xl scale-105 -translate-y-1' : ''
                 }`}
                 onClick={() => setActiveFeature(index)}
               >
-                <Card className="h-full border-0 shadow-lg p-8">
-                  <div className={`w-16 h-16 bg-gradient-to-r ${feature.gradient} rounded-2xl flex items-center justify-center mx-auto mb-6`}>
-                    <feature.icon className="w-8 h-8 text-white" />
+                <Card className="h-full border-0 shadow-xl hover:shadow-2xl p-10 rounded-3xl bg-white/80 backdrop-blur-sm transition-all duration-500">
+                  <div className={`w-20 h-20 bg-gradient-to-br ${feature.gradient} rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-lg`}>
+                    <feature.icon className="w-10 h-10 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-neutral-900 mb-3">{feature.title}</h3>
-                  <p className="text-neutral-600">{feature.description}</p>
+                  <h3 className="text-2xl font-bold text-neutral-900 mb-4 tracking-tight">{feature.title}</h3>
+                  <p className="text-neutral-600 text-lg leading-relaxed">{feature.description}</p>
                 </Card>
               </div>
             ))}
@@ -301,13 +314,15 @@ const Landing = () => {
       </section>
 
       {/* Download Section */}
-      <section id="download" className="py-20 bg-gradient-to-br from-sage/5 to-warm-blue/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
+      <section id="download" className="py-24 bg-gradient-to-br from-sage/8 via-white to-warm-blue/8 relative overflow-hidden">
+        <div className="absolute top-20 left-20 w-64 h-64 bg-sage/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-20 w-80 h-80 bg-warm-blue/5 rounded-full blur-3xl"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-6 tracking-tight">
               Download ContentFlow
             </h2>
-            <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
+            <p className="text-xl md:text-2xl text-neutral-600 max-w-3xl mx-auto font-light leading-relaxed">
               Available on all your favorite devices. Start planning better content today.
             </p>
           </div>
@@ -477,26 +492,29 @@ const Landing = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-sage to-warm-blue">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+      <section className="py-28 bg-gradient-to-br from-sage via-warm-blue to-sage relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="absolute top-10 left-10 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 right-10 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="max-w-5xl mx-auto text-center px-4 sm:px-6 lg:px-8 relative z-10">
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 tracking-tight leading-tight">
             Ready to transform your content strategy?
           </h2>
-          <p className="text-xl text-white/90 mb-8">
+          <p className="text-xl md:text-2xl text-white/95 mb-12 font-light max-w-3xl mx-auto leading-relaxed">
             Join thousands of creators who are already planning better content with ContentFlow.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
             <Link href="/signup">
-              <Button size="lg" variant="secondary" className="group">
+              <Button size="lg" variant="secondary" className="group px-10 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
                 Start Free Trial
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-sage">
+            <Button size="lg" variant="outline" className="text-white border-2 border-white hover:bg-white hover:text-sage px-10 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
               Schedule Demo
             </Button>
           </div>
-          <p className="text-sm text-white/70 mt-4">
+          <p className="text-base text-white/80 font-medium">
             No credit card required • 14-day free trial
           </p>
         </div>
