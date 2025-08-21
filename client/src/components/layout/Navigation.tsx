@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { useAuth } from '../auth/AuthProvider';
 import {
   Calendar,
   Lightbulb,
@@ -30,7 +29,8 @@ const Navigation = () => {
     { path: '/collaboration', icon: Users, label: 'Team' },
   ];
 
-  const { user } = useAuth();
+  // Dummy auth object for demonstration purposes
+  const { user } = { user: { email: 'admin@demo.com' } };
 
   return (
     <nav className="bg-white/80 backdrop-blur-sm border-b border-neutral-200/50 sticky top-0 z-50">
@@ -92,6 +92,7 @@ const Navigation = () => {
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-3 rounded-xl text-neutral-600 hover:text-sage hover:bg-sage/5 transition-all duration-250 min-h-[44px] min-w-[44px] flex items-center justify-center"
+              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
               {isMobileMenuOpen ? (
                 <X className="w-6 h-6" />
@@ -106,18 +107,19 @@ const Navigation = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-neutral-200/50 bg-white/95 backdrop-blur-sm">
             <div className="px-3 pt-3 pb-4 space-y-2">
-              {navItems.map(({ path, icon: Icon, label }) => {
+              {navItems.map(({ path, icon: Icon, label }, index) => {
                 const isActive = location === path;
                 return (
                   <Link
                     key={path}
                     href={path}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex items-center space-x-4 px-4 py-4 rounded-xl text-base font-medium transition-all duration-250 min-h-[56px] ${
+                    className={`flex items-center space-x-4 px-4 py-4 rounded-xl text-base font-medium transition-all duration-250 min-h-[56px] touch-target ${
                       isActive
                         ? 'bg-sage text-white shadow-sm'
                         : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
                     }`}
+                    style={{ animationDelay: `${index * 50}ms` }}
                   >
                     <Icon className="w-5 h-5 flex-shrink-0" />
                     <span>{label}</span>
@@ -128,7 +130,7 @@ const Navigation = () => {
                 <Link
                   href="/admin"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center space-x-4 px-4 py-4 rounded-xl text-base font-medium transition-all duration-250 min-h-[56px] ${
+                  className={`flex items-center space-x-4 px-4 py-4 rounded-xl text-base font-medium transition-all duration-250 min-h-[56px] touch-target ${
                     location === '/admin'
                       ? 'bg-sage text-white shadow-sm'
                       : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
@@ -141,7 +143,7 @@ const Navigation = () => {
               <Link
                   href="/pricing"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center space-x-4 px-4 py-4 rounded-xl text-base font-medium transition-all duration-250 min-h-[56px] text-neutral-600 hover:text-sage hover:bg-sage/5"
+                  className="flex items-center space-x-4 px-4 py-4 rounded-xl text-base font-medium transition-all duration-250 min-h-[56px] touch-target text-neutral-600 hover:text-sage hover:bg-sage/5"
                 >
                   <DollarSign className="w-5 h-5 flex-shrink-0" />
                   <span>Pricing</span>
@@ -149,7 +151,7 @@ const Navigation = () => {
               <Link
                   href="/subscription"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center space-x-4 px-4 py-4 rounded-xl text-base font-medium transition-all duration-250 min-h-[56px] text-neutral-600 hover:text-sage hover:bg-sage/5"
+                  className="flex items-center space-x-4 px-4 py-4 rounded-xl text-base font-medium transition-all duration-250 min-h-[56px] touch-target text-neutral-600 hover:text-sage hover:bg-sage/5"
                 >
                   <CreditCard className="w-5 h-5 flex-shrink-0" />
                   <span>Subscription</span>

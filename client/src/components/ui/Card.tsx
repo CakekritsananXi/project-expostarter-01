@@ -1,36 +1,33 @@
-import React from 'react';
+import { forwardRef } from 'react';
+import { cn } from '../../utils/cn';
 
-interface CardProps {
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  className?: string;
   hover?: boolean;
-  padding?: 'sm' | 'md' | 'lg';
+  clickable?: boolean;
 }
 
-const Card: React.FC<CardProps> = ({ 
-  children, 
-  className = '', 
-  hover = false,
-  padding = 'md'
-}) => {
-  const paddingClasses = {
-    sm: 'p-4',
-    md: 'p-6',
-    lg: 'p-8',
-  };
+const Card = forwardRef<HTMLDivElement, CardProps>(
+  ({ className, children, hover = false, clickable = false, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'rounded-xl border border-neutral-200 bg-white shadow-soft',
+          'p-4 sm:p-6', // Mobile-first responsive padding
+          hover && 'hover:shadow-medium transition-all duration-200',
+          clickable && 'cursor-pointer active:scale-[0.98] touch-manipulation',
+          clickable && 'hover:shadow-medium hover:-translate-y-0.5',
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
 
-  return (
-    <div
-      className={`
-        bg-white rounded-2xl shadow-soft border border-neutral-100
-        ${hover ? 'hover:shadow-medium transition-shadow duration-250' : ''}
-        ${paddingClasses[padding]}
-        ${className}
-      `}
-    >
-      {children}
-    </div>
-  );
-};
+Card.displayName = 'Card';
 
 export default Card;

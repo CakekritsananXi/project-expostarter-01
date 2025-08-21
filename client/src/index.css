@@ -12,6 +12,8 @@
     /* Better font rendering */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Enable momentum scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
   }
   
   body {
@@ -21,14 +23,35 @@
     -webkit-overflow-scrolling: touch;
     /* Remove tap highlight on mobile */
     -webkit-tap-highlight-color: transparent;
+    /* Prevent horizontal scroll */
+    overflow-x: hidden;
   }
 
-  /* Touch-friendly buttons and links */
+  /* Enhanced touch-friendly buttons and links */
   button, a, input, textarea, select {
-    /* Larger touch targets */
+    /* Larger touch targets for better accessibility */
     min-height: 44px;
+    min-width: 44px;
     /* Better touch response */
     touch-action: manipulation;
+    /* Improve tap responsiveness */
+    cursor: pointer;
+  }
+
+  /* Input-specific mobile optimizations */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  textarea {
+    /* Prevent zoom on iOS when focusing inputs */
+    font-size: 16px;
+    /* Better mobile input appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Improve input responsiveness */
+    border-radius: 8px;
   }
 
   /* Prevent text selection on mobile for UI elements */
@@ -40,17 +63,39 @@
     -webkit-touch-callout: none;
   }
 
-  /* Better focus states for mobile */
+  /* Enhanced focus states for mobile accessibility */
   button:focus-visible,
   a:focus-visible,
   input:focus-visible {
     outline: 2px solid #7C9885;
     outline-offset: 2px;
+    /* Add a subtle glow for better visibility */
+    box-shadow: 0 0 0 4px rgba(124, 152, 133, 0.2);
+  }
+
+  /* Mobile-specific typography improvements */
+  @media (max-width: 768px) {
+    body {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    
+    h1 { font-size: 2rem; line-height: 1.2; }
+    h2 { font-size: 1.75rem; line-height: 1.3; }
+    h3 { font-size: 1.5rem; line-height: 1.3; }
+    h4 { font-size: 1.25rem; line-height: 1.4; }
+    
+    /* Improve paragraph spacing on mobile */
+    p {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
   }
 }
 
-/* Mobile-specific utilities */
+/* Enhanced mobile utilities */
 @layer utilities {
+  /* Safe area utilities for modern mobile devices */
   .safe-area-inset-top {
     padding-top: env(safe-area-inset-top);
   }
@@ -59,24 +104,112 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 
+  .safe-area-inset-left {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .safe-area-inset-right {
+    padding-right: env(safe-area-inset-right);
+  }
+
+  .safe-area-insets {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Enhanced mobile scrolling */
   .mobile-scroll {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    scroll-behavior: smooth;
   }
 
   .mobile-scroll::-webkit-scrollbar {
     display: none;
   }
 
-  /* Performance optimizations */
+  /* Vertical mobile scroll */
+  .mobile-scroll-y {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .mobile-scroll-y::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Enhanced performance optimizations */
   .will-change-transform {
     will-change: transform;
   }
 
+  .will-change-scroll {
+    will-change: scroll-position;
+  }
+
   .gpu-accelerated {
     transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Mobile-specific spacing utilities */
+  .mobile-padding {
+    padding: 1rem;
+  }
+
+  .mobile-margin {
+    margin: 1rem;
+  }
+
+  /* Touch target optimization */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Mobile-specific text utilities */
+  .text-mobile-sm { font-size: 0.875rem; }
+  .text-mobile-base { font-size: 1rem; }
+  .text-mobile-lg { font-size: 1.125rem; }
+  .text-mobile-xl { font-size: 1.25rem; }
+
+  /* Reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float,
+    .animate-glow,
+    .animate-fadeInUp {
+      animation: none;
+    }
+    
+    * {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+
+  /* Mobile-specific container utilities */
+  .mobile-container {
+    max-width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .mobile-container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
   }
 }
 

@@ -133,7 +133,7 @@ export const useMobilePerformance = () => {
   const sendMetrics = async () => {
     if (metrics.lcp || metrics.fcp) {
       try {
-        // Send to your analytics endpoint
+        // Send to your analytics endpoint with mobile-specific data
         await fetch('/api/analytics/performance', {
           method: 'POST',
           headers: {
@@ -144,6 +144,17 @@ export const useMobilePerformance = () => {
             timestamp: Date.now(),
             url: window.location.href,
             userAgent: navigator.userAgent,
+            // Additional mobile context
+            isMobile: metrics.deviceType === 'mobile',
+            isTablet: metrics.deviceType === 'tablet',
+            networkSpeed: getConnectionType(),
+            memoryUsage: (performance as any).memory ? {
+              used: (performance as any).memory.usedJSHeapSize,
+              total: (performance as any).memory.totalJSHeapSize,
+              limit: (performance as any).memory.jsHeapSizeLimit
+            } : null,
+            // Touch capability detection
+            touchSupport: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
           }),
         });
       } catch (error) {
