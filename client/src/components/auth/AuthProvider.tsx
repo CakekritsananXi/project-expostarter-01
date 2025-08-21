@@ -64,7 +64,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         firstName,
         lastName,
       });
-      
+
       authAPI.setToken(token);
       setUser(user);
     } catch (error) {
@@ -78,7 +78,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         email,
         password,
       });
-      
+
       authAPI.setToken(token);
       setUser(user);
     } catch (error) {
@@ -107,3 +107,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+
+// Ensure consistent export for Fast Refresh
+AuthProvider.displayName = 'AuthProvider';

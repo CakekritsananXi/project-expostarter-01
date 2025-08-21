@@ -24,11 +24,18 @@ const Admin = () => {
   }, []);
 
   const fetchUsers = async () => {
+    setLoading(true);
+    setError('');
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
       const response = await fetch('/api/admin/users', {
         headers: {
           'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       });
 
@@ -36,12 +43,17 @@ const Admin = () => {
         if (response.status === 403) {
           throw new Error('Access denied. Admin privileges required.');
         }
-        throw new Error('Failed to fetch users');
+        if (response.status === 401) {
+          throw new Error('Authentication failed. Please sign in again.');
+        }
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `Failed to fetch users (${response.status})`);
       }
 
       const data = await response.json();
-      setUsers(data.users);
+      setUsers(data.users || []);
     } catch (err: any) {
+      console.error('Error fetching users:', err);
       setError(err.message);
     } finally {
       setLoading(false);

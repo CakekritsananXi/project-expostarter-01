@@ -16,7 +16,7 @@ import {
   type InsertStripeOrder
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, and, isNull } from "drizzle-orm";
+import { eq, and, isNull, desc } from "drizzle-orm";
 
 // Storage interface for all CRUD operations
 export interface IStorage {
