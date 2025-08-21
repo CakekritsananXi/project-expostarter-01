@@ -33,6 +33,9 @@ const Admin = () => {
       });
 
       if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error('Access denied. Admin privileges required.');
+        }
         throw new Error('Failed to fetch users');
       }
 
@@ -44,6 +47,23 @@ const Admin = () => {
       setLoading(false);
     }
   };
+
+  // Check if current user is admin
+  if (user?.email !== 'admin@demo.com') {
+    return (
+      <div className="min-h-screen bg-cream flex items-center justify-center">
+        <Card className="p-8 max-w-md">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Settings className="w-8 h-8 text-red-600" />
+            </div>
+            <h2 className="text-xl font-semibold text-neutral-900 mb-2">Access Denied</h2>
+            <p className="text-neutral-600">You don't have permission to access the admin panel.</p>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -112,6 +132,53 @@ const Admin = () => {
           </Card>
         </div>
 
+        {/* System Information */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <Card>
+            <div className="p-6">
+              <h2 className="text-xl font-semibold text-neutral-900 mb-4">System Information</h2>
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-neutral-600">Environment:</span>
+                  <span className="text-neutral-900 font-medium">Development</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-neutral-600">Database:</span>
+                  <span className="text-neutral-900 font-medium">PostgreSQL</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-neutral-600">Auth System:</span>
+                  <span className="text-neutral-900 font-medium">JWT</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-neutral-600">Payments:</span>
+                  <span className="text-neutral-900 font-medium">Stripe</span>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <div className="p-6">
+              <h2 className="text-xl font-semibold text-neutral-900 mb-4">Quick Actions</h2>
+              <div className="space-y-3">
+                <Button onClick={fetchUsers} className="w-full justify-start">
+                  <Activity className="w-4 h-4 mr-2" />
+                  Refresh User Data
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  <Database className="w-4 h-4 mr-2" />
+                  View System Logs
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  <Settings className="w-4 h-4 mr-2" />
+                  System Settings
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </div>
+
         {/* Users Table */}
         <Card>
           <div className="p-6">
@@ -135,6 +202,7 @@ const Admin = () => {
                       <th className="text-left py-3 px-4 font-medium text-neutral-700">Name</th>
                       <th className="text-left py-3 px-4 font-medium text-neutral-700">Email</th>
                       <th className="text-left py-3 px-4 font-medium text-neutral-700">Created</th>
+                      <th className="text-left py-3 px-4 font-medium text-neutral-700">Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -147,6 +215,15 @@ const Admin = () => {
                         <td className="py-3 px-4 text-neutral-600">{user.email}</td>
                         <td className="py-3 px-4 text-neutral-600">
                           {new Date(user.createdAt).toLocaleDateString()}
+                        </td>
+                        <td className="py-3 px-4">
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            user.email === 'admin@demo.com' 
+                              ? 'bg-purple-100 text-purple-800' 
+                              : 'bg-green-100 text-green-800'
+                          }`}>
+                            {user.email === 'admin@demo.com' ? 'Admin' : 'Active'}
+                          </span>
                         </td>
                       </tr>
                     ))}

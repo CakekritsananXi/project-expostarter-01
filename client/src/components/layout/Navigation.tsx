@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'wouter';
+import { useAuth } from '../auth/AuthProvider';
 import {
   Calendar,
   Lightbulb,
@@ -27,9 +28,7 @@ const Navigation = () => {
     { path: '/collaboration', icon: Users, label: 'Team' },
   ];
 
-  // Assume 'user' is available in the scope, e.g., from context or props
-  // For demonstration, let's mock a user object. In a real app, this would come from authentication state.
-  const user = { email: 'admin@demo.com' };
+  const { user } = useAuth();
 
   return (
     <nav className="bg-white/80 backdrop-blur-sm border-b border-neutral-200/50 sticky top-0 z-50">

@@ -25,7 +25,13 @@ function App() {
           <Route path="/signup" component={SignUp} />
           <Route path="/pricing" component={Pricing} />
           <Route path="/success" component={Success} />
-          <Route path="/admin" component={Admin} />
+          <Route path="/admin">
+            {() => (
+              <ProtectedRoute>
+                <Admin />
+              </ProtectedRoute>
+            )}
+          </Route>
 
           {/* Protected routes */}
           <Route path="/:rest*">
