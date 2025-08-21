@@ -92,7 +92,9 @@ const SubscriptionManager = () => {
     });
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status?: string) => {
+    if (!status) return 'text-gray-600 bg-gray-50';
+    
     switch (status) {
       case 'active':
         return 'text-green-600 bg-green-50';
@@ -134,7 +136,7 @@ const SubscriptionManager = () => {
           <h2 className="text-lg font-semibold text-neutral-900">Current Subscription</h2>
           {subscription && (
             <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(subscription.status)}`}>
-              {subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1)}
+              {subscription.status ? subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1) : 'Unknown'}
             </span>
           )}
         </div>
