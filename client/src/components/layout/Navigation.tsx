@@ -126,9 +126,6 @@ const Navigation = () => {
                   <Users className="w-5 h-5 flex-shrink-0" />
                   <span>Admin</span>
                 </Link>
-                  <Users className="w-5 h-5" /> {/* Using Users icon for Admin as an example */}
-                  <span>Admin</span>
-                </Link>
               )}
             </div>
           </div>
