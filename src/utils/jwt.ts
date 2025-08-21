@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { Secret, SignOptions } from 'jsonwebtoken'; // Import Secret and SignOptions
 import { config } from '../config/environment';
 import { JWTPayload } from '../types';
 import { logger } from './logger';
@@ -9,11 +9,12 @@ export class JWTService {
    */
   public static generateAccessToken(payload: JWTPayload): string {
     try {
-      return jwt.sign(payload, config.jwt.secret, {
+      const options: SignOptions = {
         expiresIn: config.jwt.expiresIn,
         issuer: 'contentflow-api',
         audience: 'contentflow-client',
-      });
+      };
+      return jwt.sign(payload, config.jwt.secret as Secret, options);
     } catch (error) {
       logger.error('Error generating access token:', error);
       throw new Error('Failed to generate access token');
@@ -25,11 +26,12 @@ export class JWTService {
    */
   public static generateRefreshToken(payload: JWTPayload): string {
     try {
-      return jwt.sign(payload, config.jwt.refreshSecret, {
+      const options: SignOptions = {
         expiresIn: config.jwt.refreshExpiresIn,
         issuer: 'contentflow-api',
         audience: 'contentflow-client',
-      });
+      };
+      return jwt.sign(payload, config.jwt.refreshSecret as Secret, options);
     } catch (error) {
       logger.error('Error generating refresh token:', error);
       throw new Error('Failed to generate refresh token');
@@ -41,7 +43,7 @@ export class JWTService {
    */
   public static verifyAccessToken(token: string): JWTPayload {
     try {
-      return jwt.verify(token, config.jwt.secret, {
+      return jwt.verify(token, config.jwt.secret as Secret, {
         issuer: 'contentflow-api',
         audience: 'contentflow-client',
       }) as JWTPayload;
@@ -62,7 +64,7 @@ export class JWTService {
    */
   public static verifyRefreshToken(token: string): JWTPayload {
     try {
-      return jwt.verify(token, config.jwt.refreshSecret, {
+      return jwt.verify(token, config.jwt.refreshSecret as Secret, {
         issuer: 'contentflow-api',
         audience: 'contentflow-client',
       }) as JWTPayload;

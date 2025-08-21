@@ -28,20 +28,23 @@ const buttonVariants = cva(
   }
 );
 
-interface ButtonPropsBase extends VariantProps<typeof buttonVariants> {
+// Define the custom props for the Button component
+interface CustomButtonProps {
   loading?: boolean;
   icon?: LucideIcon;
   iconPosition?: 'left' | 'right';
 }
 
-type ButtonProps<T extends React.ElementType = 'button'> = ButtonPropsBase & 
-  Omit<React.ComponentPropsWithoutRef<T>, keyof ButtonPropsBase> & {
-  as?: T;
-};
+// Combine variant props with custom props
+type ButtonVariantProps = VariantProps<typeof buttonVariants> & CustomButtonProps;
+
+// Define the polymorphic component type
+type ButtonProps<T extends React.ElementType> = ButtonVariantProps & 
+  Omit<React.ComponentPropsWithoutRef<T>, keyof ButtonVariantProps>;
 
 const Button = React.forwardRef(
   <T extends React.ElementType = 'button'>(
-    { className, variant, size, as: Comp = 'button', loading, icon: Icon, iconPosition = 'left', children, ...props }: ButtonProps<T>, 
+    { className, variant, size, as: Comp = 'button', loading, icon: Icon, iconPosition = 'left', children, ...props }: ButtonProps<T>,
     ref: React.Ref<React.ElementRef<T>>
   ) => {
     return (
@@ -64,7 +67,7 @@ const Button = React.forwardRef(
       </Comp>
     );
   }
-) as <T extends React.ElementType = 'button'>(props: ButtonProps<T> & { ref?: React.Ref<React.ElementRef<T>> }) => React.ReactElement;
+) as (<T extends React.ElementType = 'button'>(props: ButtonProps<T> & { ref?: React.Ref<React.ElementRef<T>> }) => React.ReactElement);
 
 Button.displayName = "Button";
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, LinkProps } from 'react-router-dom'; // Import LinkProps
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import { useAuth } from '../components/auth/AuthProvider';
 import { getUserSubscription } from '../lib/stripe';

@@ -1,6 +1,6 @@
 import winston from 'winston';
 import { config } from '../config/environment';
-import { Format } from 'winston'; // Import Format type
+import { TransformableInfo } from 'winston/lib/winston/logform'; // Correct import for TransformableInfo
 
 // Define log levels
 const levels = {
@@ -28,7 +28,7 @@ const format = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
   winston.format.colorize({ all: true }),
   winston.format.printf(
-    (info: Format.TransformableInfo) => `${info.timestamp} ${info.level}: ${info.message}`,
+    (info: TransformableInfo) => `${info.timestamp} ${info.level}: ${info.message}`,
   ),
 );
 

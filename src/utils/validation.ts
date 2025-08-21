@@ -1,4 +1,5 @@
-import { body, param, query, ValidationChain, Request } from 'express-validator';
+import { body, param, query, ValidationChain, CustomValidator } from 'express-validator';
+import { Request } from 'express'; // Import Request from express
 
 // User validation rules
 export const validateUserRegistration: ValidationChain[] = [
@@ -106,10 +107,10 @@ export const validatePasswordChange: ValidationChain[] = [
     .withMessage('New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'),
 
   body('confirmPassword')
-    .custom((value: string, { req }: { req: Request }) => {
+    .custom(((value: string, { req }: { req: Request }) => {
       if (value !== req.body.newPassword) {
         throw new Error('Password confirmation does not match new password');
       }
       return true;
-    }),
+    }) as CustomValidator),
 ];
