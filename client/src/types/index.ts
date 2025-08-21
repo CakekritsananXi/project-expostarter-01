@@ -104,3 +104,84 @@ export class AppError extends Error {
     Error.captureStackTrace(this, this.constructor);
   }
 }
+
+// Content Management Types
+export interface Category {
+  id: number;
+  name: string;
+  description?: string;
+  color: string;
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Post {
+  id: number;
+  title: string;
+  content?: string;
+  excerpt?: string;
+  status: 'draft' | 'scheduled' | 'published' | 'archived';
+  type: string;
+  tags: string[];
+  seoTitle?: string;
+  seoDescription?: string;
+  featuredImage?: string;
+  publishedAt?: string;
+  scheduledAt?: string;
+  userId: number;
+  categoryId?: number;
+  campaignId?: number;
+  metadata: Record<string, any>;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Campaign {
+  id: number;
+  name: string;
+  description?: string;
+  status: 'planning' | 'active' | 'completed' | 'paused';
+  startDate?: string;
+  endDate?: string;
+  goals: string[];
+  targetAudience?: string;
+  budget?: number;
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ContentIdea {
+  id: number;
+  title: string;
+  description?: string;
+  type: string;
+  priority: 'low' | 'medium' | 'high';
+  status: 'idea' | 'researching' | 'outlined' | 'in_progress' | 'completed';
+  tags: string[];
+  targetDate?: string;
+  estimatedHours?: number;
+  userId: number;
+  categoryId?: number;
+  campaignId?: number;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CalendarEvent {
+  id: number;
+  title: string;
+  description?: string;
+  eventDate: string;
+  eventType: string;
+  status: 'scheduled' | 'completed' | 'cancelled';
+  allDay: boolean;
+  duration?: number;
+  userId: number;
+  postId?: number;
+  campaignId?: number;
+  createdAt: string;
+  updatedAt: string;
+}

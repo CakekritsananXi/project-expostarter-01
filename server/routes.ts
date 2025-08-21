@@ -4,7 +4,17 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Stripe from "stripe";
 import { storage } from "./storage";
-import { insertUserSchema, insertStripeCustomerSchema, insertStripeSubscriptionSchema, insertStripeOrderSchema } from "@shared/schema";
+import { 
+  insertUserSchema, 
+  insertStripeCustomerSchema, 
+  insertStripeSubscriptionSchema, 
+  insertStripeOrderSchema,
+  insertCategorySchema,
+  insertPostSchema,
+  insertCampaignSchema,
+  insertContentIdeaSchema,
+  insertCalendarEventSchema
+} from "@shared/schema";
 import { z } from "zod";
 
 // Initialize Stripe (only if valid key is provided)
@@ -740,51 +750,294 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   }
 
+  // Categories API routes
+  app.get("/api/categories", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const categories = await storage.getCategories(userId);
+      res.json({ categories });
+    } catch (error) {
+      console.error('Get categories error:', error);
+      res.status(500).json({ error: 'Failed to get categories' });
+    }
+  });
+
+  app.post("/api/categories", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const categoryData = insertCategorySchema.parse({ ...req.body, userId });
+      const category = await storage.createCategory(categoryData);
+      res.status(201).json({ category });
+    } catch (error) {
+      console.error('Create category error:', error);
+      res.status(400).json({ error: error instanceof z.ZodError ? error.errors : 'Failed to create category' });
+    }
+  });
+
+  app.put("/api/categories/:id", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const categoryId = parseInt(req.params.id);
+      const updates = insertCategorySchema.partial().parse(req.body);
+      const category = await storage.updateCategory(categoryId, userId, updates);
+      
+      if (!category) {
+        return res.status(404).json({ error: 'Category not found' });
+      }
+      
+      res.json({ category });
+    } catch (error) {
+      console.error('Update category error:', error);
+      res.status(400).json({ error: error instanceof z.ZodError ? error.errors : 'Failed to update category' });
+    }
+  });
+
+  app.delete("/api/categories/:id", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const categoryId = parseInt(req.params.id);
+      await storage.deleteCategory(categoryId, userId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Delete category error:', error);
+      res.status(500).json({ error: 'Failed to delete category' });
+    }
+  });
+
+  // Posts API routes
+  app.get("/api/posts", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const posts = await storage.getPosts(userId);
+      res.json({ posts });
+    } catch (error) {
+      console.error('Get posts error:', error);
+      res.status(500).json({ error: 'Failed to get posts' });
+    }
+  });
+
+  app.get("/api/posts/:id", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const postId = parseInt(req.params.id);
+      const post = await storage.getPost(postId, userId);
+      
+      if (!post) {
+        return res.status(404).json({ error: 'Post not found' });
+      }
+      
+      res.json({ post });
+    } catch (error) {
+      console.error('Get post error:', error);
+      res.status(500).json({ error: 'Failed to get post' });
+    }
+  });
+
+  app.post("/api/posts", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const postData = insertPostSchema.parse({ ...req.body, userId });
+      const post = await storage.createPost(postData);
+      res.status(201).json({ post });
+    } catch (error) {
+      console.error('Create post error:', error);
+      res.status(400).json({ error: error instanceof z.ZodError ? error.errors : 'Failed to create post' });
+    }
+  });
+
+  app.put("/api/posts/:id", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const postId = parseInt(req.params.id);
+      const updates = insertPostSchema.partial().parse(req.body);
+      const post = await storage.updatePost(postId, userId, updates);
+      
+      if (!post) {
+        return res.status(404).json({ error: 'Post not found' });
+      }
+      
+      res.json({ post });
+    } catch (error) {
+      console.error('Update post error:', error);
+      res.status(400).json({ error: error instanceof z.ZodError ? error.errors : 'Failed to update post' });
+    }
+  });
+
+  app.delete("/api/posts/:id", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const postId = parseInt(req.params.id);
+      await storage.deletePost(postId, userId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Delete post error:', error);
+      res.status(500).json({ error: 'Failed to delete post' });
+    }
+  });
+
+  // Campaigns API routes
+  app.get("/api/campaigns", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const campaigns = await storage.getCampaigns(userId);
+      res.json({ campaigns });
+    } catch (error) {
+      console.error('Get campaigns error:', error);
+      res.status(500).json({ error: 'Failed to get campaigns' });
+    }
+  });
+
+  app.post("/api/campaigns", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const campaignData = insertCampaignSchema.parse({ ...req.body, userId });
+      const campaign = await storage.createCampaign(campaignData);
+      res.status(201).json({ campaign });
+    } catch (error) {
+      console.error('Create campaign error:', error);
+      res.status(400).json({ error: error instanceof z.ZodError ? error.errors : 'Failed to create campaign' });
+    }
+  });
+
+  app.put("/api/campaigns/:id", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const campaignId = parseInt(req.params.id);
+      const updates = insertCampaignSchema.partial().parse(req.body);
+      const campaign = await storage.updateCampaign(campaignId, userId, updates);
+      
+      if (!campaign) {
+        return res.status(404).json({ error: 'Campaign not found' });
+      }
+      
+      res.json({ campaign });
+    } catch (error) {
+      console.error('Update campaign error:', error);
+      res.status(400).json({ error: error instanceof z.ZodError ? error.errors : 'Failed to update campaign' });
+    }
+  });
+
+  app.delete("/api/campaigns/:id", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const campaignId = parseInt(req.params.id);
+      await storage.deleteCampaign(campaignId, userId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Delete campaign error:', error);
+      res.status(500).json({ error: 'Failed to delete campaign' });
+    }
+  });
+
+  // Content Ideas API routes
+  app.get("/api/content-ideas", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const contentIdeas = await storage.getContentIdeas(userId);
+      res.json({ contentIdeas });
+    } catch (error) {
+      console.error('Get content ideas error:', error);
+      res.status(500).json({ error: 'Failed to get content ideas' });
+    }
+  });
+
+  app.post("/api/content-ideas", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const ideaData = insertContentIdeaSchema.parse({ ...req.body, userId });
+      const contentIdea = await storage.createContentIdea(ideaData);
+      res.status(201).json({ contentIdea });
+    } catch (error) {
+      console.error('Create content idea error:', error);
+      res.status(400).json({ error: error instanceof z.ZodError ? error.errors : 'Failed to create content idea' });
+    }
+  });
+
+  app.put("/api/content-ideas/:id", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const ideaId = parseInt(req.params.id);
+      const updates = insertContentIdeaSchema.partial().parse(req.body);
+      const contentIdea = await storage.updateContentIdea(ideaId, userId, updates);
+      
+      if (!contentIdea) {
+        return res.status(404).json({ error: 'Content idea not found' });
+      }
+      
+      res.json({ contentIdea });
+    } catch (error) {
+      console.error('Update content idea error:', error);
+      res.status(400).json({ error: error instanceof z.ZodError ? error.errors : 'Failed to update content idea' });
+    }
+  });
+
+  app.delete("/api/content-ideas/:id", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const ideaId = parseInt(req.params.id);
+      await storage.deleteContentIdea(ideaId, userId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Delete content idea error:', error);
+      res.status(500).json({ error: 'Failed to delete content idea' });
+    }
+  });
+
+  // Calendar Events API routes
+  app.get("/api/calendar-events", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const calendarEvents = await storage.getCalendarEvents(userId);
+      res.json({ calendarEvents });
+    } catch (error) {
+      console.error('Get calendar events error:', error);
+      res.status(500).json({ error: 'Failed to get calendar events' });
+    }
+  });
+
+  app.post("/api/calendar-events", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const eventData = insertCalendarEventSchema.parse({ ...req.body, userId });
+      const calendarEvent = await storage.createCalendarEvent(eventData);
+      res.status(201).json({ calendarEvent });
+    } catch (error) {
+      console.error('Create calendar event error:', error);
+      res.status(400).json({ error: error instanceof z.ZodError ? error.errors : 'Failed to create calendar event' });
+    }
+  });
+
+  app.put("/api/calendar-events/:id", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const eventId = parseInt(req.params.id);
+      const updates = insertCalendarEventSchema.partial().parse(req.body);
+      const calendarEvent = await storage.updateCalendarEvent(eventId, userId, updates);
+      
+      if (!calendarEvent) {
+        return res.status(404).json({ error: 'Calendar event not found' });
+      }
+      
+      res.json({ calendarEvent });
+    } catch (error) {
+      console.error('Update calendar event error:', error);
+      res.status(400).json({ error: error instanceof z.ZodError ? error.errors : 'Failed to update calendar event' });
+    }
+  });
+
+  app.delete("/api/calendar-events/:id", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).userId;
+      const eventId = parseInt(req.params.id);
+      await storage.deleteCalendarEvent(eventId, userId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Delete calendar event error:', error);
+      res.status(500).json({ error: 'Failed to delete calendar event' });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
 }
-import express from 'express';
-
-const router = express.Router();
-
-// Performance analytics endpoint
-router.post('/api/analytics/performance', (req, res) => {
-  const {
-    lcp,
-    fcp,
-    fid,
-    cls,
-    ttfb,
-    deviceType,
-    connectionType,
-    viewportWidth,
-    viewportHeight,
-    timestamp,
-    url,
-    userAgent
-  } = req.body;
-
-  // Log performance metrics (in production, you'd store this in a database)
-  console.log('📱 Mobile Performance Metrics:', {
-    deviceType,
-    connectionType,
-    viewport: `${viewportWidth}x${viewportHeight}`,
-    metrics: {
-      lcp: lcp ? `${lcp}ms` : 'N/A',
-      fcp: fcp ? `${fcp}ms` : 'N/A',
-      fid: fid ? `${fid}ms` : 'N/A',
-      cls: cls || 'N/A',
-      ttfb: ttfb ? `${ttfb}ms` : 'N/A'
-    },
-    url,
-    timestamp: new Date(timestamp).toISOString()
-  });
-
-  // Store metrics (implement your preferred analytics service)
-  // Example: await analyticsService.track('mobile_performance', { ... });
-
-  res.json({ success: true, message: 'Performance metrics recorded' });
-});
-
-export default router;
