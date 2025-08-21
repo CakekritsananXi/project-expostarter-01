@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { 
-  Calendar, 
-  Lightbulb, 
-  Target, 
-  FolderOpen, 
-  BarChart3, 
-  Users, 
+import {
+  Calendar,
+  Lightbulb,
+  Target,
+  FolderOpen,
+  BarChart3,
+  Users,
   Home,
   PenTool,
   Menu,
@@ -32,12 +32,12 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-sage rounded-xl flex items-center justify-center">
+            <div className="w-8 h-8 bg-sage rounded-2xl flex items-center justify-center">
               <PenTool className="w-4 h-4 text-white" />
             </div>
             <span className="text-lg sm:text-xl font-semibold text-neutral-800">ContentFlow</span>
           </div>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-1">
             {navItems.map(({ path, icon: Icon, label }) => (
@@ -57,7 +57,7 @@ const Navigation = () => {
               </NavLink>
             ))}
           </div>
-          
+
           {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button
@@ -72,7 +72,7 @@ const Navigation = () => {
             </button>
           </div>
         </div>
-        
+
         {/* Mobile Navigation Menu */}
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-neutral-200/50 bg-white/95 backdrop-blur-sm">

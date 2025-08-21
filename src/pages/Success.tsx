@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import { useAuth } from '../components/auth/AuthProvider';
@@ -74,7 +74,7 @@ const Success = () => {
             >
               Go to Dashboard
             </Button>
-            
+
             <Button
               as={Link}
               to="/strategy"

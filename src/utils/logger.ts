@@ -1,5 +1,6 @@
 import winston from 'winston';
 import { config } from '../config/environment';
+import { Format } from 'winston'; // Import Format type
 
 // Define log levels
 const levels = {
@@ -27,7 +28,7 @@ const format = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
   winston.format.colorize({ all: true }),
   winston.format.printf(
-    (info) => `${info.timestamp} ${info.level}: ${info.message}`,
+    (info: Format.TransformableInfo) => `${info.timestamp} ${info.level}: ${info.message}`,
   ),
 );
 
@@ -40,7 +41,7 @@ const transports = [
       winston.format.simple()
     )
   }),
-  
+
   // File transport for errors
   new winston.transports.File({
     filename: 'logs/error.log',
@@ -50,7 +51,7 @@ const transports = [
       winston.format.json()
     )
   }),
-  
+
   // File transport for all logs
   new winston.transports.File({
     filename: config.logFile,

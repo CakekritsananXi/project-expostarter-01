@@ -1,4 +1,3 @@
-import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { PenTool } from 'lucide-react';
 import { useAuth } from '../components/auth/AuthProvider';

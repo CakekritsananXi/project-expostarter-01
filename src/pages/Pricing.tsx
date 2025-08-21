@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Check, Star } from 'lucide-react';
 import { useAuth } from '../components/auth/AuthProvider';
 import { STRIPE_PRODUCTS } from '../stripe-config';

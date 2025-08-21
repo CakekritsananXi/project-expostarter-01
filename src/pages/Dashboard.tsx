@@ -1,4 +1,3 @@
-import React from 'react';
 import { Calendar, Lightbulb, Target, TrendingUp } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -94,7 +93,7 @@ const Dashboard = () => {
             Welcome to ContentFlow
           </h3>
           <p className="text-neutral-600 max-w-md mx-auto">
-            Your modern content planning platform is ready. Start by exploring the navigation 
+            Your modern content planning platform is ready. Start by exploring the navigation
             or use the quick actions above to begin planning your content strategy.
           </p>
         </div>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './components/auth/AuthProvider';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -25,7 +24,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/success" element={<Success />} />
-          
+
           {/* Protected routes */}
           <Route path="/*" element={
             <ProtectedRoute>

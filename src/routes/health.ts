@@ -62,7 +62,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/HealthResponse'
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (_req: Request, res: Response) => {
   const startTime = Date.now();
   let dbStatus = 'disconnected';
   let dbResponseTime = 0;
@@ -116,11 +116,11 @@ router.get('/', async (req: Request, res: Response) => {
  *       503:
  *         description: Service is not ready
  */
-router.get('/ready', async (req: Request, res: Response) => {
+router.get('/ready', async (_req: Request, res: Response) => {
   try {
     // Check if database is ready
     await database.query('SELECT 1');
-    
+
     res.status(200).json({
       success: true,
       message: 'Service is ready',
@@ -152,7 +152,7 @@ router.get('/ready', async (req: Request, res: Response) => {
  *       200:
  *         description: Service is alive
  */
-router.get('/live', (req: Request, res: Response) => {
+router.get('/live', (_req: Request, res: Response) => {
   res.status(200).json({
     success: true,
     message: 'Service is alive',

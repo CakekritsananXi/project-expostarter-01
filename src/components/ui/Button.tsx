@@ -1,76 +1,71 @@
 import React from 'react';
-import { DivideIcon as LucideIcon } from 'lucide-react';
+import { type LucideIcon } from 'lucide-react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '../../utils/cn';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
+const buttonVariants = cva(
+  "inline-flex items-center justify-center rounded-xl text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none",
+  {
+    variants: {
+      variant: {
+        primary: "bg-sage text-white shadow hover:bg-sage/90 focus-visible:ring-sage",
+        secondary: "bg-neutral-200 text-neutral-800 shadow-sm hover:bg-neutral-300 focus-visible:ring-neutral-400",
+        outline: "border border-neutral-300 bg-white text-neutral-700 shadow-sm hover:bg-neutral-50 focus-visible:ring-neutral-400",
+        ghost: "hover:bg-neutral-100 text-neutral-700 focus-visible:ring-neutral-400",
+        link: "text-sage underline-offset-4 hover:underline focus-visible:ring-sage",
+        danger: "bg-red-500 text-white shadow hover:bg-red-600 focus-visible:ring-red-500",
+      },
+      size: {
+        sm: "h-9 px-3",
+        md: "h-10 px-4 py-2",
+        lg: "h-11 px-8",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+      size: "md",
+    },
+  }
+);
+
+interface ButtonPropsBase extends VariantProps<typeof buttonVariants> {
+  loading?: boolean;
   icon?: LucideIcon;
   iconPosition?: 'left' | 'right';
-  loading?: boolean;
-  children: React.ReactNode;
 }
 
-const Button: React.FC<ButtonProps> = ({
-  variant = 'primary',
-  size = 'md',
-  icon: Icon,
-  iconPosition = 'left',
-  loading = false,
-  children,
-  className = '',
-  disabled,
-  ...props
-}) => {
-  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
-  
-  const variantClasses = {
-    primary: 'bg-sage text-white hover:bg-sage/90 focus:ring-sage/20 shadow-soft hover:shadow-medium',
-    secondary: 'bg-warm-blue text-white hover:bg-warm-blue/90 focus:ring-warm-blue/20 shadow-soft hover:shadow-medium',
-    outline: 'border border-neutral-200 text-neutral-700 hover:bg-neutral-50 focus:ring-sage/20 hover:border-neutral-300',
-    ghost: 'text-neutral-600 hover:text-sage hover:bg-sage/5 focus:ring-sage/20',
-  };
-
-  const sizeClasses = {
-    sm: 'px-3 py-2 text-sm',
-    md: 'px-4 py-2.5 text-sm',
-    lg: 'px-6 py-3 text-base',
-  };
-
-  const iconSizeClasses = {
-    sm: 'w-4 h-4',
-    md: 'w-4 h-4',
-    lg: 'w-5 h-5',
-  };
-
-  const isDisabled = disabled || loading;
-
-  return (
-    <button
-      className={`
-        ${baseClasses}
-        ${variantClasses[variant]}
-        ${sizeClasses[size]}
-        ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}
-        ${className}
-      `}
-      disabled={isDisabled}
-      {...props}
-    >
-      {loading ? (
-        <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent mr-2" />
-      ) : (
-        Icon && iconPosition === 'left' && (
-          <Icon className={`${iconSizeClasses[size]} mr-2`} />
-        )
-      )}
-      
-      {children}
-      
-      {!loading && Icon && iconPosition === 'right' && (
-        <Icon className={`${iconSizeClasses[size]} ml-2`} />
-      )}
-    </button>
-  );
+type ButtonProps<T extends React.ElementType = 'button'> = ButtonPropsBase & 
+  Omit<React.ComponentPropsWithoutRef<T>, keyof ButtonPropsBase> & {
+  as?: T;
 };
+
+const Button = React.forwardRef(
+  <T extends React.ElementType = 'button'>(
+    { className, variant, size, as: Comp = 'button', loading, icon: Icon, iconPosition = 'left', children, ...props }: ButtonProps<T>, 
+    ref: React.Ref<React.ElementRef<T>>
+  ) => {
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        disabled={loading || props.disabled}
+        {...props}
+      >
+        {loading && (
+          <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+        )}
+        {!loading && Icon && iconPosition === 'left' && (
+          <Icon className="mr-2 h-4 w-4" />
+        )}
+        {children}
+        {!loading && Icon && iconPosition === 'right' && (
+          <Icon className="ml-2 h-4 w-4" />
+        )}
+      </Comp>
+    );
+  }
+) as <T extends React.ElementType = 'button'>(props: ButtonProps<T> & { ref?: React.Ref<React.ElementRef<T>> }) => React.ReactElement;
+
+Button.displayName = "Button";
 
 export default Button;

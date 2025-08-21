@@ -20,7 +20,7 @@ class Database {
     });
 
     // Handle pool errors
-    this.pool.on('error', (err) => {
+    this.pool.on('error', (err: Error) => {
       logger.error('Unexpected error on idle client', err);
       process.exit(-1);
     });
@@ -38,7 +38,7 @@ class Database {
       const client = await this.pool.connect();
       logger.info('✅ Database connected successfully');
       client.release();
-      
+
       // Initialize database schema
       await this.initializeSchema();
     } catch (error) {

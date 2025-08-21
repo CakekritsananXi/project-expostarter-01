@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Crown, AlertCircle } from 'lucide-react';
 import { useAuth } from '../auth/AuthProvider';
 import { getUserSubscription } from '../../lib/stripe';

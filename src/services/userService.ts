@@ -3,6 +3,21 @@ import { User, CreateUserRequest, UpdateUserRequest, PaginatedResponse, Paginati
 import { PasswordService } from '../utils/password';
 import { logger } from '../utils/logger';
 
+// Define an interface for the raw user data from the database
+interface UserRow {
+  id: number;
+  email: string;
+  password?: string; // Optional as it's not always returned
+  first_name: string;
+  last_name: string;
+  role: string;
+  is_active: boolean;
+  email_verified: boolean;
+  last_login?: Date;
+  created_at: Date;
+  updated_at: Date;
+}
+
 export class UserService {
   /**
    * Create a new user
@@ -26,7 +41,7 @@ export class UserService {
       ];
 
       const result = await database.query(query, values);
-      const user = result.rows[0];
+      const user: UserRow = result.rows[0];
 
       return {
         id: user.id,
@@ -41,12 +56,12 @@ export class UserService {
       };
     } catch (error) {
       logger.error('Error creating user:', error);
-      
+
       // Handle unique constraint violation (duplicate email)
       if ((error as any).code === '23505') {
         throw new Error('Email address is already registered');
       }
-      
+
       throw new Error('Failed to create user');
     }
   }
@@ -63,12 +78,12 @@ export class UserService {
       `;
 
       const result = await database.query(query, [id]);
-      
+
       if (result.rows.length === 0) {
         return null;
       }
 
-      const user = result.rows[0];
+      const user: UserRow = result.rows[0];
       return {
         id: user.id,
         email: user.email,
@@ -99,12 +114,12 @@ export class UserService {
       `;
 
       const result = await database.query(query, [email]);
-      
+
       if (result.rows.length === 0) {
         return null;
       }
 
-      const user = result.rows[0];
+      const user: UserRow = result.rows[0];
       return {
         id: user.id,
         email: user.email,
@@ -135,16 +150,16 @@ export class UserService {
       `;
 
       const result = await database.query(query, [email]);
-      
+
       if (result.rows.length === 0) {
         return null;
       }
 
-      const user = result.rows[0];
+      const user: UserRow = result.rows[0];
       return {
         id: user.id,
         email: user.email,
-        password: user.password,
+        password: user.password!, // Assert non-null as it's explicitly selected
         firstName: user.first_name,
         lastName: user.last_name,
         role: user.role,
@@ -201,12 +216,12 @@ export class UserService {
       `;
 
       const result = await database.query(query, values);
-      
+
       if (result.rows.length === 0) {
         return null;
       }
 
-      const user = result.rows[0];
+      const user: UserRow = result.rows[0];
       return {
         id: user.id,
         email: user.email,
@@ -221,12 +236,12 @@ export class UserService {
       };
     } catch (error) {
       logger.error('Error updating user:', error);
-      
+
       // Handle unique constraint violation (duplicate email)
       if ((error as any).code === '23505') {
         throw new Error('Email address is already in use');
       }
-      
+
       throw new Error('Failed to update user');
     }
   }
@@ -298,7 +313,7 @@ export class UserService {
 
       const result = await database.query(query, [limit, offset]);
 
-      const users: User[] = result.rows.map(user => ({
+      const users: User[] = result.rows.map((user: UserRow) => ({
         id: user.id,
         email: user.email,
         firstName: user.first_name,

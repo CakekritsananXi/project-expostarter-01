@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { validationResult } from 'express-validator';
+import { validationResult, ResultFactory } from 'express-validator';
 import { ApiResponse, ValidationError } from '../types';
 
 /**
@@ -11,9 +11,9 @@ export const handleValidationErrors = (
   next: NextFunction
 ): void => {
   const errors = validationResult(req);
-  
+
   if (!errors.isEmpty()) {
-    const validationErrors: ValidationError[] = errors.array().map(error => ({
+    const validationErrors: ValidationError[] = errors.array().map((error: ResultFactory<any>) => ({
       field: error.type === 'field' ? (error as any).path : 'unknown',
       message: error.msg,
     }));

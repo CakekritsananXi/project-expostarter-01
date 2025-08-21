@@ -45,3 +45,25 @@ To maintain a clean and efficient codebase, please adhere to the following rules
     *   Avoid `try/catch` blocks for errors that should naturally bubble up for debugging and global error handling.
 *   **Responsiveness:**
     *   All new UI elements and layouts must be designed with a **mobile-first approach** and be fully responsive using Tailwind CSS utilities.
+
+## General Coding Principles
+
+*   **Simplicity & Elegance:** Prioritize straightforward and clean solutions. Avoid over-engineering or unnecessary complexity.
+*   **Readability:** Write code that is easy to understand and follow. Use clear variable names, consistent formatting, and meaningful comments where necessary.
+*   **Maintainability:** Design components and modules to be easily updated, extended, and debugged in the future.
+*   **Modularity:** Break down complex features into smaller, independent components or functions.
+*   **DRY (Don't Repeat Yourself):** Abstract common logic or UI patterns into reusable utilities or components.
+
+## Component and File Structure
+
+*   **Single Responsibility Principle:** Each component or file should ideally have one primary responsibility.
+*   **Dedicated Files:** Every new React component or custom hook **must** be created in its own dedicated `.tsx` file. Do not add new components to existing files.
+*   **Small Components:** Aim for components that are concise, ideally under 100 lines of code. If a component grows too large, consider refactoring it into smaller, more focused sub-components.
+*   **Directory Naming:** Directory names (e.g., `src/pages`, `src/components`) must be all lowercase. File names may use mixed-case (e.g., `UserProfile.tsx`).
+
+## AI Interaction Guidelines
+
+*   **Full Implementation:** All requested features must be fully functional with complete code. Avoid placeholders, partial implementations, or `TODO` comments.
+*   **User-Centric Changes:** Only make changes that are directly requested by the user. Do not add features or refactor code unless explicitly asked.
+*   **Concise Summaries:** After all code changes, provide a very concise, non-technical summary of the changes made.
+*   **Error Reporting:** Do not suppress errors with `try/catch` blocks unless specifically requested. Errors should bubble up to allow for proper debugging and resolution.

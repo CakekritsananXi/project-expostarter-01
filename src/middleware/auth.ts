@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { JWTService } from '../utils/jwt';
 import { UserService } from '../services/userService';
 import { AuthenticatedRequest } from '../types';
@@ -53,7 +53,7 @@ export const authenticateToken = async (
     next();
   } catch (error) {
     logger.error('Authentication error:', error);
-    
+
     if (error instanceof Error) {
       if (error.message.includes('expired')) {
         res.status(401).json({
@@ -84,9 +84,9 @@ export const authenticateToken = async (
  * Middleware to authorize user roles
  */
 export const authorizeRoles = (...roles: string[]) => {
-  return (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
+  return (req: AuthenticatedRequest, _res: Response, next: NextFunction): void => {
     if (!req.user) {
-      res.status(401).json({
+      _res.status(401).json({
         success: false,
         message: 'Authentication required',
         error: 'NOT_AUTHENTICATED',
@@ -95,7 +95,7 @@ export const authorizeRoles = (...roles: string[]) => {
     }
 
     if (!roles.includes(req.user.role)) {
-      res.status(403).json({
+      _res.status(403).json({
         success: false,
         message: 'Insufficient permissions',
         error: 'INSUFFICIENT_PERMISSIONS',
@@ -112,7 +112,7 @@ export const authorizeRoles = (...roles: string[]) => {
  */
 export const optionalAuth = async (
   req: AuthenticatedRequest,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
@@ -122,7 +122,7 @@ export const optionalAuth = async (
     if (token) {
       const payload = JWTService.verifyAccessToken(token);
       const user = await UserService.findById(payload.userId);
-      
+
       if (user && user.isActive) {
         req.user = user;
       }
