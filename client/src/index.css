@@ -211,6 +211,24 @@
       padding-right: 1.5rem;
     }
   }
+
+  /* Scroll performance optimizations */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent zoom on double tap while keeping zoom functionality */
+  .no-zoom {
+    touch-action: manipulation;
+  }
+
+  /* Optimized mobile viewport handling */
+  @supports (height: 100dvh) {
+    .min-h-screen {
+      min-height: 100dvh;
+    }
+  }
 }
 
 @layer base {

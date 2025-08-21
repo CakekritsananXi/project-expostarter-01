@@ -15,13 +15,15 @@ import {
   Calendar,
   TrendingUp,
   Award,
-  Rocket
+  Rocket,
+  Sparkles
 } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import AnimatedCounter from '../components/ui/AnimatedCounter';
 import FeatureShowcase from '../components/ui/FeatureShowcase';
 import MobilePerformanceDashboard from '../components/ui/MobilePerformanceDashboard';
+import MobileOptimizedContainer from '../components/ui/MobileOptimizedContainer';
 
 const Landing = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -29,7 +31,7 @@ const Landing = () => {
 
   useEffect(() => {
     setIsVisible(true);
-    
+
     // Auto-rotate features
     const interval = setInterval(() => {
       setActiveFeature(prev => (prev + 1) % 3);
@@ -125,54 +127,21 @@ const Landing = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-36 pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-sage/3 via-white to-warm-blue/5"></div>
-        <div className="absolute top-20 right-20 w-72 h-72 bg-sage/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-40 left-10 w-96 h-96 bg-warm-blue/5 rounded-full blur-3xl"></div>
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-              <div className="inline-flex items-center px-5 py-3 bg-gradient-to-r from-sage/10 to-warm-blue/10 rounded-full text-sage text-sm font-semibold mb-8 border border-sage/20 shadow-sm">
-                <Star className="w-4 h-4 mr-2 fill-current" />
-                #1 Content Planning App
+      <section className="pt-20 pb-16 mobile:pt-16 mobile:pb-12">
+        <MobileOptimizedContainer maxWidth="xl" padding="md">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <div className="order-2 lg:order-1">
+              <div className="inline-flex items-center px-3 py-2 mobile:px-4 mobile:py-2 bg-sage/10 rounded-full text-sm font-medium text-sage mb-4 mobile:mb-6">
+                <Sparkles className="w-4 h-4 mr-2" />
+                <span className="text-xs mobile:text-sm">New: AI-Powered Content Suggestions</span>
               </div>
-              <h1 className="text-5xl md:text-7xl font-bold text-neutral-900 mb-8 leading-[1.1] tracking-tight">
-                Plan. Create. 
-                <span className="bg-gradient-to-r from-sage via-warm-blue to-sage bg-clip-text text-transparent block mt-2">
-                  Succeed.
-                </span>
+              <h1 className="text-3xl mobile:text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-900 mb-4 mobile:mb-6 leading-tight">
+                Create content that
+                <span className="text-sage block">converts</span>
               </h1>
-              <p className="text-xl md:text-2xl text-neutral-600 mb-10 leading-relaxed font-light max-w-lg">
+              <p className="text-lg mobile:text-xl text-neutral-600 mb-6 mobile:mb-8 leading-relaxed max-w-lg">
                 The ultimate content planning platform that helps creators, marketers, and teams build engaging content strategies with AI-powered insights.
               </p>
-              <div className="flex flex-col sm:flex-row gap-5 mb-12">
-                <Button size="lg" className="group bg-gradient-to-r from-sage to-warm-blue hover:from-sage/90 hover:to-warm-blue/90 shadow-xl hover:shadow-2xl transition-all duration-300 px-8 py-4 text-lg font-semibold">
-                  Download for Free
-                  <Download className="w-5 h-5 ml-3 group-hover:translate-y-0.5 transition-transform" />
-                </Button>
-                <Button variant="outline" size="lg" className="group border-2 hover:bg-neutral-50 shadow-lg hover:shadow-xl transition-all duration-300 px-8 py-4 text-lg font-semibold">
-                  <PlayCircle className="w-5 h-5 mr-3" />
-                  Watch Demo
-                </Button>
-              </div>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-10 text-sm text-neutral-600">
-                <div className="flex items-center space-x-3">
-                  <div className="flex -space-x-3">
-                    {[1,2,3,4].map(i => (
-                      <div key={i} className="w-10 h-10 bg-gradient-to-br from-sage to-warm-blue rounded-full border-3 border-white flex items-center justify-center text-white text-sm font-bold shadow-lg">
-                        {i}
-                      </div>
-                    ))}
-                  </div>
-                  <span className="font-medium">10K+ creators</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  {[1,2,3,4,5].map(i => (
-                    <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400 drop-shadow-sm" />
-                  ))}
-                  <span className="ml-2 font-medium">4.9 rating</span>
-                </div>
-              </div>
             </div>
 
             {/* Mobile Mockup */}
@@ -183,7 +152,7 @@ const Landing = () => {
                   <div className="w-full h-full bg-white rounded-[2.5rem] overflow-hidden relative ring-1 ring-neutral-200">
                     {/* Notch */}
                     <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-7 bg-black rounded-b-3xl shadow-lg"></div>
-                    
+
                     {/* Screen Content */}
                     <div className="p-6 pt-10 h-full bg-gradient-to-br from-sage/5 to-warm-blue/5">
                       <div className="text-center mb-6">
@@ -193,7 +162,7 @@ const Landing = () => {
                         <h3 className="font-bold text-neutral-900">Today's Plan</h3>
                         <p className="text-sm text-neutral-600">5 posts scheduled</p>
                       </div>
-                      
+
                       <div className="space-y-3">
                         {[1,2,3].map(i => (
                           <div key={i} className="bg-white rounded-xl p-3 shadow-sm border border-neutral-100">
@@ -207,7 +176,7 @@ const Landing = () => {
                           </div>
                         ))}
                       </div>
-                      
+
                       <div className="absolute bottom-6 left-6 right-6">
                         <div className="bg-sage rounded-2xl p-3 text-white text-center">
                           <span className="text-sm font-medium">Create New Post</span>
@@ -216,7 +185,7 @@ const Landing = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Floating Elements */}
                 <div className="absolute -top-4 -right-4 bg-green-500 text-white rounded-full p-3 shadow-lg animate-bounce">
                   <CheckCircle className="w-5 h-5" />
@@ -227,60 +196,36 @@ const Landing = () => {
               </div>
             </div>
           </div>
-        </div>
+        </MobileOptimizedContainer>
       </section>
 
       {/* Stats Section */}
-      <section className="py-24 bg-sage text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-sage via-warm-blue to-sage opacity-95"></div>
-        <div className="absolute inset-0">
-          <div className="absolute top-16 left-16 w-40 h-40 bg-white/8 rounded-full animate-float blur-sm"></div>
-          <div className="absolute bottom-24 right-24 w-32 h-32 bg-white/12 rounded-full animate-float blur-sm" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-white/10 rounded-full animate-float blur-sm" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute top-32 right-1/3 w-16 h-16 bg-white/15 rounded-full animate-float blur-sm" style={{ animationDelay: '3s' }}></div>
-        </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
-              Trusted by creators worldwide
-            </h2>
-            <p className="text-xl md:text-2xl text-white/90 font-light">
-              Join thousands of successful content creators and teams
-            </p>
+      <section className="py-12 mobile:py-16 bg-neutral-50">
+        <MobileOptimizedContainer maxWidth="xl" padding="md">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mobile:gap-8">
+            {[
+              { number: 50000, label: "Active Users", suffix: "+" },
+              { number: 2500000, label: "Posts Created", suffix: "+" },
+              { number: 98, label: "Satisfaction Rate", suffix: "%" },
+              { number: 45, label: "Time Saved", suffix: "%" }
+            ].map((stat, index) => (
+              <div key={index} className="text-center">
+                <AnimatedCounter 
+                  end={stat.number} 
+                  duration={2000} 
+                  className="text-2xl mobile:text-3xl md:text-4xl font-bold text-neutral-900 mb-1 mobile:mb-2" 
+                  suffix={stat.suffix}
+                />
+                <p className="text-neutral-600 text-xs mobile:text-sm md:text-base">{stat.label}</p>
+              </div>
+            ))}
           </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold mb-2">
-                <AnimatedCounter end={50000} suffix="+" />
-              </div>
-              <p className="text-white/80">Active Users</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold mb-2">
-                <AnimatedCounter end={2500000} suffix="+" />
-              </div>
-              <p className="text-white/80">Posts Created</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold mb-2">
-                <AnimatedCounter end={95} suffix="%" />
-              </div>
-              <p className="text-white/80">Success Rate</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold mb-2">
-                <AnimatedCounter end={150} suffix="+" />
-              </div>
-              <p className="text-white/80">Countries</p>
-            </div>
-          </div>
-        </div>
+        </MobileOptimizedContainer>
       </section>
 
       {/* Interactive Features Section */}
       <section id="features" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <MobileOptimizedContainer maxWidth="xl" padding="md">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
               Everything you need to succeed
@@ -291,12 +236,12 @@ const Landing = () => {
           </div>
 
           <FeatureShowcase />
-        </div>
+        </MobileOptimizedContainer>
       </section>
 
       {/* Feature Grid */}
       <section className="py-24 bg-gradient-to-br from-neutral-50 via-white to-sage/8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <MobileOptimizedContainer maxWidth="xl" padding="md">
           <div className="grid md:grid-cols-3 gap-10">
             {features.map((feature, index) => (
               <div 
@@ -316,14 +261,14 @@ const Landing = () => {
               </div>
             ))}
           </div>
-        </div>
+        </MobileOptimizedContainer>
       </section>
 
       {/* Download Section */}
       <section id="download" className="py-24 bg-gradient-to-br from-sage/8 via-white to-warm-blue/8 relative overflow-hidden">
         <div className="absolute top-20 left-20 w-64 h-64 bg-sage/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-20 w-80 h-80 bg-warm-blue/5 rounded-full blur-3xl"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <MobileOptimizedContainer maxWidth="xl" padding="md">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-6 tracking-tight">
               Download ContentFlow
@@ -378,7 +323,7 @@ const Landing = () => {
                       <div className="text-lg font-semibold">App Store</div>
                     </div>
                   </button>
-                  
+
                   <button className="flex items-center justify-center bg-black text-white px-6 py-3 rounded-xl hover:bg-neutral-800 transition-colors group">
                     <div className="mr-3">
                       <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
@@ -458,12 +403,12 @@ const Landing = () => {
               </div>
             </div>
           </div>
-        </div>
+        </MobileOptimizedContainer>
       </section>
 
       {/* Testimonials */}
       <section id="testimonials" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <MobileOptimizedContainer maxWidth="xl" padding="md">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
               Loved by creators worldwide
@@ -494,7 +439,7 @@ const Landing = () => {
               </Card>
             ))}
           </div>
-        </div>
+        </MobileOptimizedContainer>
       </section>
 
       {/* CTA Section */}
@@ -502,7 +447,7 @@ const Landing = () => {
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="absolute top-10 left-10 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="max-w-5xl mx-auto text-center px-4 sm:px-6 lg:px-8 relative z-10">
+        <MobileOptimizedContainer maxWidth="xl" padding="md">
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 tracking-tight leading-tight">
             Ready to transform your content strategy?
           </h2>
@@ -523,12 +468,12 @@ const Landing = () => {
           <p className="text-base text-white/80 font-medium">
             No credit card required • 14-day free trial
           </p>
-        </div>
+        </MobileOptimizedContainer>
       </section>
 
       {/* Footer */}
       <footer className="bg-neutral-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <MobileOptimizedContainer maxWidth="xl" padding="md">
           <div className="grid md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
@@ -574,7 +519,7 @@ const Landing = () => {
           <div className="border-t border-neutral-800 mt-8 pt-8 text-center text-neutral-400">
             <p>&copy; 2025 ContentFlow. All rights reserved.</p>
           </div>
-        </div>
+        </MobileOptimizedContainer>
       </footer>
     </div>
   );

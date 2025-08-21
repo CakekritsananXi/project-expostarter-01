@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar, Users, BarChart3, Zap, Globe, Bell } from 'lucide-react';
+import { Calendar, Users, BarChart3, Zap, Globe, Bell, Check } from 'lucide-react';
 
 const FeatureShowcase = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -81,7 +81,7 @@ const FeatureShowcase = () => {
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div className="bg-purple-500 h-2 rounded-full" style={{ width: '82%' }}></div>
             </div>
-            
+
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-600">Reach</span>
               <span className="font-bold text-lg text-pink-600">24.5K</span>
