@@ -253,12 +253,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   async function requireAdmin(req: Request, res: Response, next: Function) {
     try {
       const userId = (req as any).userId;
+      console.log('Checking admin privileges for user ID:', userId);
+      
       const user = await storage.getUser(userId);
+      console.log('Found user:', user ? { id: user.id, email: user.email } : 'No user found');
       
       if (!user || user.email !== 'admin@demo.com') {
+        console.log('Access denied - not admin user');
         return res.status(403).json({ error: 'Access denied. Admin privileges required.' });
       }
       
+      console.log('Admin access granted');
       (req as any).adminUser = user;
       next();
     } catch (error) {
@@ -270,7 +275,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin routes
   app.get("/api/admin/users", authenticateToken, requireAdmin, async (req: Request, res: Response) => {
     try {
+      console.log('Admin users request from user:', (req as any).adminUser?.email);
       const users = await storage.getAllUsers();
+      console.log('Found users:', users.length);
+      
       const safeUsers = users.map(user => ({
         id: user.id,
         email: user.email,
@@ -282,7 +290,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ users: safeUsers });
     } catch (error) {
       console.error('Get users error:', error);
-      res.status(500).json({ error: 'Failed to get users' });
+      console.error('Error details:', error instanceof Error ? error.message : String(error));
+      res.status(500).json({ 
+        error: 'Failed to get users',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   });
 

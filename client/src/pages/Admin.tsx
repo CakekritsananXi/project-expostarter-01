@@ -46,15 +46,16 @@ const Admin = () => {
         if (response.status === 401) {
           throw new Error('Authentication failed. Please sign in again.');
         }
-        const errorData = await response.json().catch(() => ({}));
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
         throw new Error(errorData.error || `Failed to fetch users (${response.status})`);
       }
 
       const data = await response.json();
+      console.log('Received users data:', data);
       setUsers(data.users || []);
     } catch (err: any) {
       console.error('Error fetching users:', err);
-      setError(err.message);
+      setError(err.message || 'Failed to fetch users');
     } finally {
       setLoading(false);
     }

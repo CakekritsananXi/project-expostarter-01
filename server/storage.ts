@@ -169,10 +169,11 @@ export class DatabaseStorage implements IStorage {
       .where(and(eq(stripeOrders.customerId, customerId), isNull(stripeOrders.deletedAt)));
   }
 
-  async getAllUsers() {
-    return await db.query.users.findMany({
-      orderBy: (users, { desc }) => [desc(users.createdAt)],
-    });
+  async getAllUsers(): Promise<User[]> {
+    return await db
+      .select()
+      .from(users)
+      .orderBy(desc(users.createdAt));
   }
 }
 
