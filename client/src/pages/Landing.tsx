@@ -406,6 +406,143 @@ const Landing = () => {
         </MobileOptimizedContainer>
       </section>
 
+      {/* Pricing Section */}
+      <section className="py-20 bg-gradient-to-b from-white to-neutral-50">
+        <MobileOptimizedContainer>
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center space-x-2 bg-sage/10 px-4 py-2 rounded-full mb-6">
+              <Award className="w-4 h-4 text-sage" />
+              <span className="text-sm font-medium text-sage">Simple, transparent pricing</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900 mb-6">
+              Choose Your Perfect Plan
+            </h2>
+            <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+              Scale your content strategy with plans designed for creators, teams, and enterprises.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Starter Plan */}
+            <Card className="relative p-8 hover:shadow-xl transition-all duration-300">
+              <div className="text-center mb-8">
+                <h3 className="text-xl font-bold text-neutral-900 mb-2">Starter</h3>
+                <div className="mb-4">
+                  <span className="text-4xl font-bold text-neutral-900">$9</span>
+                  <span className="text-neutral-600 ml-1">/month</span>
+                </div>
+                <p className="text-sm text-neutral-600">Perfect for individual creators</p>
+              </div>
+
+              <div className="space-y-4 mb-8">
+                {[
+                  "Up to 5 content pieces/month",
+                  "Basic analytics",
+                  "1 social media account",
+                  "Email support",
+                  "Content templates"
+                ].map((feature, index) => (
+                  <div key={index} className="flex items-center space-x-3">
+                    <CheckCircle className="w-5 h-5 text-sage flex-shrink-0" />
+                    <span className="text-sm text-neutral-700">{feature}</span>
+                  </div>
+                ))}
+              </div>
+
+              <Link href="/pricing">
+                <Button variant="outline" size="lg" className="w-full">
+                  Get Started
+                </Button>
+              </Link>
+            </Card>
+
+            {/* Pro Plan - Popular */}
+            <Card className="relative p-8 ring-2 ring-sage hover:shadow-xl transition-all duration-300 scale-105">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <div className="bg-sage text-white px-4 py-2 rounded-full text-sm font-medium flex items-center space-x-1">
+                  <Star className="w-4 h-4" />
+                  <span>Most Popular</span>
+                </div>
+              </div>
+
+              <div className="text-center mb-8">
+                <h3 className="text-xl font-bold text-neutral-900 mb-2">Pro</h3>
+                <div className="mb-4">
+                  <span className="text-4xl font-bold text-neutral-900">$29</span>
+                  <span className="text-neutral-600 ml-1">/month</span>
+                </div>
+                <p className="text-sm text-neutral-600">For growing content creators</p>
+              </div>
+
+              <div className="space-y-4 mb-8">
+                {[
+                  "Unlimited content pieces",
+                  "Advanced analytics & insights",
+                  "5 social media accounts",
+                  "Priority support",
+                  "AI content suggestions",
+                  "Team collaboration (3 members)"
+                ].map((feature, index) => (
+                  <div key={index} className="flex items-center space-x-3">
+                    <CheckCircle className="w-5 h-5 text-sage flex-shrink-0" />
+                    <span className="text-sm text-neutral-700">{feature}</span>
+                  </div>
+                ))}
+              </div>
+
+              <Link href="/pricing">
+                <Button variant="primary" size="lg" className="w-full">
+                  Start Pro Trial
+                </Button>
+              </Link>
+            </Card>
+
+            {/* Enterprise Plan */}
+            <Card className="relative p-8 hover:shadow-xl transition-all duration-300">
+              <div className="text-center mb-8">
+                <h3 className="text-xl font-bold text-neutral-900 mb-2">Enterprise</h3>
+                <div className="mb-4">
+                  <span className="text-4xl font-bold text-neutral-900">$99</span>
+                  <span className="text-neutral-600 ml-1">/month</span>
+                </div>
+                <p className="text-sm text-neutral-600">For teams and agencies</p>
+              </div>
+
+              <div className="space-y-4 mb-8">
+                {[
+                  "Everything in Pro",
+                  "Unlimited team members",
+                  "Custom branding",
+                  "24/7 phone support",
+                  "Advanced integrations",
+                  "Custom analytics reports"
+                ].map((feature, index) => (
+                  <div key={index} className="flex items-center space-x-3">
+                    <CheckCircle className="w-5 h-5 text-sage flex-shrink-0" />
+                    <span className="text-sm text-neutral-700">{feature}</span>
+                  </div>
+                ))}
+              </div>
+
+              <Link href="/pricing">
+                <Button variant="outline" size="lg" className="w-full">
+                  Contact Sales
+                </Button>
+              </Link>
+            </Card>
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-neutral-600 mb-4">All plans include a 14-day free trial. No credit card required.</p>
+            <Link href="/pricing">
+              <Button variant="ghost" className="text-sage hover:text-sage/80">
+                View detailed pricing <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+          </div>
+        </MobileOptimizedContainer>
+      </section>
+
       {/* Testimonials */}
       <section id="testimonials" className="py-20 bg-white">
         <MobileOptimizedContainer maxWidth="xl" padding="md">
