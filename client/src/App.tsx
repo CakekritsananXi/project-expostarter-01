@@ -1,4 +1,3 @@
-
 import { Router, Route, Switch } from 'wouter';
 import { AuthProvider } from './components/auth/AuthProvider';
 import Layout from './components/layout/Layout';
@@ -17,6 +16,7 @@ import SignUp from './pages/SignUp';
 import Pricing from './pages/Pricing';
 import Success from './pages/Success';
 import Admin from './pages/Admin';
+import SubscriptionManager from './pages/SubscriptionManager'; // Assuming this component exists
 
 function App() {
   return (
@@ -27,7 +27,7 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/signup" component={SignUp} />
           <Route path="/pricing" component={Pricing} />
-          
+
           {/* Protected routes */}
           <Route path="/success">
             <ProtectedRoute>
@@ -36,7 +36,7 @@ function App() {
               </Layout>
             </ProtectedRoute>
           </Route>
-          
+
           <Route path="/admin">
             <ProtectedRoute>
               <Layout>
@@ -44,7 +44,7 @@ function App() {
               </Layout>
             </ProtectedRoute>
           </Route>
-          
+
           <Route path="/ideation">
             <ProtectedRoute>
               <Layout>
@@ -52,7 +52,7 @@ function App() {
               </Layout>
             </ProtectedRoute>
           </Route>
-          
+
           <Route path="/strategy">
             <ProtectedRoute>
               <Layout>
@@ -60,7 +60,7 @@ function App() {
               </Layout>
             </ProtectedRoute>
           </Route>
-          
+
           <Route path="/calendar">
             <ProtectedRoute>
               <Layout>
@@ -68,7 +68,7 @@ function App() {
               </Layout>
             </ProtectedRoute>
           </Route>
-          
+
           <Route path="/library">
             <ProtectedRoute>
               <Layout>
@@ -76,7 +76,7 @@ function App() {
               </Layout>
             </ProtectedRoute>
           </Route>
-          
+
           <Route path="/analytics">
             <ProtectedRoute>
               <Layout>
@@ -84,7 +84,7 @@ function App() {
               </Layout>
             </ProtectedRoute>
           </Route>
-          
+
           <Route path="/collaboration">
             <ProtectedRoute>
               <Layout>
@@ -92,7 +92,15 @@ function App() {
               </Layout>
             </ProtectedRoute>
           </Route>
-          
+
+          <Route path="/subscription">
+            <ProtectedRoute>
+              <Layout>
+                <SubscriptionManager />
+              </Layout>
+            </ProtectedRoute>
+          </Route>
+
           {/* Default route - Dashboard */}
           <Route path="/">
             <ProtectedRoute>

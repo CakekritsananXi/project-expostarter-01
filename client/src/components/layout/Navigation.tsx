@@ -11,7 +11,9 @@ import {
   Home,
   PenTool,
   Menu,
-  X
+  X,
+  DollarSign,
+  CreditCard
 } from 'lucide-react';
 
 const Navigation = () => {
@@ -74,6 +76,20 @@ const Navigation = () => {
                 <span className="hidden lg:inline">Admin</span>
               </Link>
             )}
+            <Link
+                  href="/pricing"
+                  className="flex items-center space-x-2 px-3 lg:px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-250 min-h-[44px] text-neutral-600 hover:text-sage hover:bg-sage/5"
+                >
+                  <DollarSign className="w-4 h-4 flex-shrink-0" />
+                  <span className="hidden lg:inline">Pricing</span>
+                </Link>
+            <Link
+                  href="/subscription"
+                  className="flex items-center space-x-2 px-3 lg:px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-250 min-h-[44px] text-neutral-600 hover:text-sage hover:bg-sage/5"
+                >
+                  <CreditCard className="w-4 h-4 flex-shrink-0" />
+                  <span className="hidden lg:inline">Subscription</span>
+                </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -127,6 +143,22 @@ const Navigation = () => {
                   <span>Admin</span>
                 </Link>
               )}
+              <Link
+                  href="/pricing"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center space-x-4 px-4 py-4 rounded-xl text-base font-medium transition-all duration-250 min-h-[56px] text-neutral-600 hover:text-sage hover:bg-sage/5"
+                >
+                  <DollarSign className="w-5 h-5 flex-shrink-0" />
+                  <span>Pricing</span>
+                </Link>
+              <Link
+                  href="/subscription"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center space-x-4 px-4 py-4 rounded-xl text-base font-medium transition-all duration-250 min-h-[56px] text-neutral-600 hover:text-sage hover:bg-sage/5"
+                >
+                  <CreditCard className="w-5 h-5 flex-shrink-0" />
+                  <span>Subscription</span>
+                </Link>
             </div>
           </div>
         )}

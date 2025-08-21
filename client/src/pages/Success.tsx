@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import { useAuth } from '../components/auth/AuthProvider';
-import { getUserSubscription } from '../lib/stripe';
+import { getSubscriptionDetails } from '../lib/stripe';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 
@@ -15,8 +15,8 @@ const Success = () => {
     const fetchSubscription = async () => {
       if (user && session) {
         try {
-          const sub = await getUserSubscription();
-          setSubscription(sub);
+          const details = await getSubscriptionDetails();
+          setSubscription(details.subscription);
         } catch (error) {
           console.error('Error fetching subscription:', error);
         }

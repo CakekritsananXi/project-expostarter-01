@@ -1,14 +1,30 @@
-import { useState } from 'react';
-import { Check, Star } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Check, Star, Settings } from 'lucide-react';
 import { useAuth } from '../components/auth/AuthProvider';
-import { STRIPE_PRODUCTS } from '../stripe-config';
-import { createCheckoutSession } from '../lib/stripe';
+import { STRIPE_PRODUCTS, getProductByPriceId } from '../stripe-config';
+import { createCheckoutSession, getSubscriptionDetails } from '../lib/stripe';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 
 const Pricing = () => {
   const { user, session } = useAuth();
   const [loadingPriceId, setLoadingPriceId] = useState<string | null>(null);
+  const [currentSubscription, setCurrentSubscription] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchSubscription = async () => {
+      if (user && session) {
+        try {
+          const details = await getSubscriptionDetails();
+          setCurrentSubscription(details.subscription);
+        } catch (error) {
+          console.error('Error fetching subscription:', error);
+        }
+      }
+    };
+
+    fetchSubscription();
+  }, [user, session]);
 
   const handleSubscribe = async (priceId: string) => {
     if (!user || !session) {
@@ -24,7 +40,6 @@ const Pricing = () => {
         successUrl: `${window.location.origin}/success`,
         cancelUrl: `${window.location.origin}/pricing`,
         mode: 'subscription',
-        token: session.access_token,
       });
 
       if (url) {
@@ -90,15 +105,37 @@ const Pricing = () => {
               ))}
             </div>
 
-            <Button
-              variant={product.popular ? 'primary' : 'outline'}
-              size="lg"
-              className="w-full"
-              loading={loadingPriceId === product.priceId}
-              onClick={() => handleSubscribe(product.priceId)}
-            >
-              {user ? 'Subscribe Now' : 'Sign Up to Subscribe'}
-            </Button>
+            {currentSubscription && currentSubscription.items.data[0].price.id === product.priceId ? (
+              <div className="space-y-2">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full"
+                  disabled
+                >
+                  Current Plan
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full"
+                  onClick={() => window.location.href = '/subscription'}
+                  icon={Settings}
+                >
+                  Manage Subscription
+                </Button>
+              </div>
+            ) : (
+              <Button
+                variant={product.popular ? 'primary' : 'outline'}
+                size="lg"
+                className="w-full"
+                loading={loadingPriceId === product.priceId}
+                onClick={() => handleSubscribe(product.priceId)}
+              >
+                {user ? (currentSubscription ? 'Switch to Plan' : 'Subscribe Now') : 'Sign Up to Subscribe'}
+              </Button>
+            )}
           </Card>
         ))}
       </div>
