@@ -42,32 +42,30 @@ type ButtonVariantProps = VariantProps<typeof buttonVariants> & CustomButtonProp
 type ButtonProps<T extends React.ElementType> = ButtonVariantProps &
   Omit<React.ComponentPropsWithoutRef<T>, keyof ButtonVariantProps>;
 
-const Button = React.forwardRef(
-  <T extends React.ElementType = 'button'>(
-    { className, variant, size, as: Comp = 'button', loading, icon: Icon, iconPosition = 'left', children, ...props }: ButtonProps<T>,
-    ref: React.Ref<React.ElementRef<T>>
-  ) => {
-    return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        disabled={loading || props.disabled}
-        {...props}
-      >
-        {loading && (
-          <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-        )}
-        {!loading && Icon && iconPosition === 'left' && (
-          <Icon className="mr-2 h-4 w-4" />
-        )}
-        {children}
-        {!loading && Icon && iconPosition === 'right' && (
-          <Icon className="ml-2 h-4 w-4" />
-        )}
-      </Comp>
-    );
-  }
-) as (<T extends React.ElementType = 'button'>(props: ButtonProps<T> & { ref?: React.Ref<React.ElementRef<T>> }) => React.ReactElement);
+const Button = React.forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement> & ButtonVariantProps
+>(({ className, variant, size, loading, icon: Icon, iconPosition = 'left', children, ...props }, ref) => {
+  return (
+    <button
+      className={cn(buttonVariants({ variant, size, className }))}
+      ref={ref}
+      disabled={loading || props.disabled}
+      {...props}
+    >
+      {loading && (
+        <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+      )}
+      {!loading && Icon && iconPosition === 'left' && (
+        <Icon className="mr-2 h-4 w-4" />
+      )}
+      {children}
+      {!loading && Icon && iconPosition === 'right' && (
+        <Icon className="ml-2 h-4 w-4" />
+      )}
+    </button>
+  );
+});
 
 Button.displayName = "Button";
 
